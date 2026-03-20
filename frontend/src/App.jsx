@@ -70,8 +70,8 @@ const TRANSLATIONS = {
     balance: "Balance", noCardsSaved: "No cards saved. Add one in your Wallet page.",
     goToWallet: "Go to Wallet", topUpWallet: "Top Up Wallet",
     needMore: "more", insufficientBalance: "Insufficient balance",
-    afterPurchase: "After purchase", continueToPayment: "Continue to Payment",
-    pay: "Pay", processing: "Processing...",
+    afterPurchase: "After purchase", continueToPayment: t("continueToPayment"),
+    pay: "Pay", processing: t("processing"),
     orderConfirmed: "Order Confirmed", thankYouPurchase: "Thank you for your purchase!",
     orderId: "Order ID", shipTo: "Ship to", phone: "Phone",
     fillAddress: "Please fill in your shipping address.",
@@ -84,15 +84,15 @@ const TRANSLATIONS = {
     neverMind: "Never mind", cancelRequestPending: "Cancel request: pending",
     cancelRequestApproved: "Cancel request: approved", cancelRequestRejected: "Cancel request: rejected",
     reason: "Reason", sellerResponse: "Seller response", provideReason: "Please provide a reason.",
-    paymentAndContact: "PAYMENT & CONTACT",
+    paymentAndContact: t("paymentAndContact"),
     // Seller Orders
     totalOrders: "total orders", cancellationRequests: "cancellation request",
     all: "All", confirmed: "Confirmed", shipped: "Shipped", delivered: "Delivered",
     cancellations: "Cancellations", buyerCancelReason: "Buyer's cancellation reason:",
     approveRefund: "Approve Refund", reject: "Reject", rejectExplain: "Explain why you're rejecting (optional):",
     confirmReject: "Confirm Reject", cancel: "Cancel", confirmOrder: "Confirm Order",
-    markShipped: "Mark as Shipped", markDelivered: "Mark Delivered",
-    confirmPrepare: "Confirm to start preparing this order",
+    markShipped: t("markShipped"), markDelivered: t("markDelivered"),
+    confirmPrepare: t("confirmPrepare"),
     handedCourier: "Mark when you've handed it to the courier",
     buyerReceived: "Mark when buyer has received the item",
     orderCompleted: "Order completed successfully", orderRefunded: "Order refunded to buyer",
@@ -392,12 +392,13 @@ const LoginPage = ({ onLogin }) => {
 // ════════════════════════════════════════
 const ProductCard = ({ product: p, onView, onToggleWatchlist, isWatched }) => {
   const c = useColors();
+  const t = useT();
   const discount = p.original_price ? Math.round((1 - p.price / p.original_price) * 100) : 0;
   return (
     <div onClick={() => onView(p)} style={{ background: c.cardBg, borderRadius: "18px", overflow: "hidden", cursor: "pointer", transition: "all 0.3s cubic-bezier(0.25,0.1,0.25,1)", border: `1px solid ${c.border}`, position: "relative" }} onMouseOver={e => { e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.boxShadow = "0 12px 40px rgba(0,0,0,0.12)"; }} onMouseOut={e => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = "none"; }}>
       <div style={{ position: "absolute", top: "12px", left: "12px", zIndex: 2, display: "flex", gap: "6px" }}>
         {discount > 0 && <span style={{ background: "#ff3b30", color: "#fff", padding: "4px 10px", borderRadius: "50px", fontSize: "11px", fontWeight: "600" }}>-{discount}%</span>}
-        {p.free_shipping && <span style={{ background: "rgba(0,113,227,0.9)", color: "#fff", padding: "4px 10px", borderRadius: "50px", fontSize: "11px", fontWeight: "600" }}>Free shipping</span>}
+        {p.free_shipping && <span style={{ background: "rgba(0,113,227,0.9)", color: "#fff", padding: "4px 10px", borderRadius: "50px", fontSize: "11px", fontWeight: "600" }}>{t("freeShipping")}</span>}
       </div>
       <button onClick={e => { e.stopPropagation(); onToggleWatchlist?.(p.id); }} style={{ position: "absolute", top: "12px", right: "12px", zIndex: 2, background: "rgba(255,255,255,0.9)", border: "none", borderRadius: "50%", width: "34px", height: "34px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: isWatched ? "#ff3b30" : "#86868b" }}><I.Heart f={isWatched} /></button>
       <div style={{ height: "180px", display: "flex", alignItems: "center", justifyContent: "center", background: c.pillBg, fontSize: "48px", fontWeight: "700", color: c.textSec }}>{p.emoji_icon || "?"}</div>
@@ -412,7 +413,7 @@ const ProductCard = ({ product: p, onView, onToggleWatchlist, isWatched }) => {
           <span style={{ fontSize: "20px", fontWeight: "700", color: c.text }}>${parseFloat(p.price).toFixed(2)}</span>
           {p.original_price && <span style={{ fontSize: "14px", color: c.textSec, textDecoration: "line-through" }}>${parseFloat(p.original_price).toFixed(2)}</span>}
         </div>
-        <p style={{ fontSize: "12px", color: c.textSec, marginTop: "6px" }}>{p.seller_name} · {p.total_sold} sold</p>
+        <p style={{ fontSize: "12px", color: c.textSec, marginTop: "6px" }}>{p.seller_name} · {p.total_sold} {t("sold")}</p>
       </div>
     </div>
   );
@@ -423,6 +424,7 @@ const ProductCard = ({ product: p, onView, onToggleWatchlist, isWatched }) => {
 // ════════════════════════════════════════
 const ProductDetail = ({ product: p, onBack, onAddToCart, onBuyNow }) => {
   const c = useColors();
+  const t = useT();
   const [qty, setQty] = useState(1);
   return (
     <div style={{ maxWidth: "980px", margin: "0 auto", padding: "20px 20px 60px" }}>
@@ -453,8 +455,8 @@ const ProductDetail = ({ product: p, onBack, onAddToCart, onBuyNow }) => {
             </div>
           </div>
           <div style={{ display: "flex", gap: "12px" }}>
-            <Btn full onClick={() => onAddToCart(p, qty)}>Add to Bag</Btn>
-            <Btn variant="outline" onClick={() => onBuyNow(p, qty)} style={{ flex: "0 0 auto", padding: "14px 28px" }}>Buy Now</Btn>
+            <Btn full onClick={() => onAddToCart(p, qty)}>{t("addToBag")}</Btn>
+            <Btn variant="outline" onClick={() => onBuyNow(p, qty)} style={{ flex: "0 0 auto", padding: "14px 28px" }}>{t("buyNow")}</Btn>
           </div>
         </div>
       </div>
@@ -467,6 +469,7 @@ const ProductDetail = ({ product: p, onBack, onAddToCart, onBuyNow }) => {
 // ════════════════════════════════════════
 const CheckoutPage = ({ items, onBack, token, user, refreshUser, onComplete, onGoWallet }) => {
   const c = useColors();
+  const t = useT();
   const [step, setStep] = useState(1);
   const [payMethod, setPayMethod] = useState("wallet");
   const [selectedCard, setSelectedCard] = useState(null);
@@ -509,14 +512,14 @@ const CheckoutPage = ({ items, onBack, token, user, refreshUser, onComplete, onG
     return (
       <div style={{ maxWidth: "560px", margin: "0 auto", padding: "80px 20px", textAlign: "center" }}>
         <div style={{ width: "80px", height: "80px", borderRadius: "50%", background: "#34c75920", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 24px", color: "#34c759" }}><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M20 6L9 17l-5-5"/></svg></div>
-        <h1 style={{ fontSize: "32px", fontWeight: "700", color: c.text, letterSpacing: "-0.03em", marginBottom: "8px" }}>Order Confirmed</h1>
-        <p style={{ fontSize: "17px", color: c.textSec, marginBottom: "32px" }}>Thank you for your purchase!</p>
+        <h1 style={{ fontSize: "32px", fontWeight: "700", color: c.text, letterSpacing: "-0.03em", marginBottom: "8px" }}>{t("orderConfirmed")}</h1>
+        <p style={{ fontSize: "17px", color: c.textSec, marginBottom: "32px" }}>{t("thankYouPurchase")}</p>
         <div style={{ background: c.cardBg, borderRadius: "18px", padding: "28px", border: `1px solid ${c.border}`, textAlign: "left", marginBottom: "24px" }}>
           {[["Order ID", orderResult.order_number],["Total", `$${parseFloat(orderResult.total).toFixed(2)}`],["Payment", orderResult.payment_method],["Phone", orderResult.contact_phone],["Ship to", `${orderResult.ship_address}, ${orderResult.ship_city} ${orderResult.ship_zip}`]].map(([l,v],i) =>
             <div key={i} style={{ display: "flex", justifyContent: "space-between", padding: "10px 0", borderBottom: i < 4 ? `1px solid ${c.border}` : "none" }}><span style={{ color: c.textSec, fontSize: "14px" }}>{l}</span><span style={{ color: c.text, fontWeight: "500", fontSize: "14px" }}>{v}</span></div>
           )}
         </div>
-        <Btn full onClick={onComplete}>Continue Shopping</Btn>
+        <Btn full onClick={onComplete}>{t("continueShopping")}</Btn>
       </div>
     );
   }
@@ -524,7 +527,7 @@ const CheckoutPage = ({ items, onBack, token, user, refreshUser, onComplete, onG
   return (
     <div style={{ maxWidth: "980px", margin: "0 auto", padding: "32px 20px" }}>
       <button onClick={onBack} style={{ display: "flex", alignItems: "center", gap: "6px", background: "none", border: "none", color: c.accent, fontSize: "16px", cursor: "pointer", marginBottom: "10px", fontWeight: "500" }}><I.ArrowLeft /> Back</button>
-      <h1 style={{ fontSize: "32px", fontWeight: "700", color: c.text, letterSpacing: "-0.03em", marginBottom: "8px" }}>Checkout</h1>
+      <h1 style={{ fontSize: "32px", fontWeight: "700", color: c.text, letterSpacing: "-0.03em", marginBottom: "8px" }}>{t("checkout")}</h1>
       {/* Steps */}
       <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "32px" }}>
         {[{n:1,l:"Shipping & Contact"},{n:2,l:"Payment"}].map((s,i) => (
@@ -539,21 +542,21 @@ const CheckoutPage = ({ items, onBack, token, user, refreshUser, onComplete, onG
       <div style={{ display: "grid", gridTemplateColumns: "1fr 340px", gap: "40px", alignItems: "start" }}>
         <div>
           {step === 1 && <div style={{ background: c.cardBg, borderRadius: "18px", padding: "28px", border: `1px solid ${c.border}` }}>
-            <h3 style={{ fontSize: "18px", fontWeight: "600", color: c.text, margin: "0 0 20px" }}>Shipping Address</h3>
-            <Input label="Address" value={address.line1} onChange={e => setAddress({...address, line1: e.target.value})} placeholder="123 Apple Street, #04-56" />
+            <h3 style={{ fontSize: "18px", fontWeight: "600", color: c.text, margin: "0 0 20px" }}>{t("shippingAddress")}</h3>
+            <Input label={t("address")} value={address.line1} onChange={e => setAddress({...address, line1: e.target.value})} placeholder="123 Apple Street, #04-56" />
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
-              <Input label="City" value={address.city} onChange={e => setAddress({...address, city: e.target.value})} placeholder="Singapore" />
-              <Input label="Postal code" value={address.zip} onChange={e => setAddress({...address, zip: e.target.value})} placeholder="123456" />
+              <Input label={t("city")} value={address.city} onChange={e => setAddress({...address, city: e.target.value})} placeholder="Singapore" />
+              <Input label={t("postalCode")} value={address.zip} onChange={e => setAddress({...address, zip: e.target.value})} placeholder="123456" />
             </div>
-            <Input label="Country" value={address.country} onChange={e => setAddress({...address, country: e.target.value})} placeholder="Singapore" />
+            <Input label={t("country")} value={address.country} onChange={e => setAddress({...address, country: e.target.value})} placeholder="Singapore" />
             <div style={{ borderTop: `1px solid ${c.border}`, marginTop: "8px", paddingTop: "20px" }}>
-              <h3 style={{ fontSize: "18px", fontWeight: "600", color: c.text, margin: "0 0 20px" }}>Contact Information</h3>
-              <Input label="Phone number" type="tel" value={phone} onChange={e => setPhone(e.target.value)} placeholder="+65 9123 4567" />
-              <p style={{ fontSize: "12px", color: c.textSec }}>We'll send delivery updates to this number.</p>
+              <h3 style={{ fontSize: "18px", fontWeight: "600", color: c.text, margin: "0 0 20px" }}>{t("contactInfo")}</h3>
+              <Input label={t("phoneNumber")} type="tel" value={phone} onChange={e => setPhone(e.target.value)} placeholder="+65 9123 4567" />
+              <p style={{ fontSize: "12px", color: c.textSec }}>{t("deliveryUpdates")}</p>
             </div>
           </div>}
           {step === 2 && <div style={{ background: c.cardBg, borderRadius: "18px", padding: "28px", border: `1px solid ${c.border}` }}>
-            <h3 style={{ fontSize: "18px", fontWeight: "600", color: c.text, margin: "0 0 20px" }}>Payment Method</h3>
+            <h3 style={{ fontSize: "18px", fontWeight: "600", color: c.text, margin: "0 0 20px" }}>{t("paymentMethod")}</h3>
             <div style={{ display: "flex", gap: "12px", marginBottom: "24px" }}>
               {[{id:"wallet",l:"Wallet",sub:`Balance: $${parseFloat(user.wallet_balance).toFixed(2)}`,icon:<I.Wallet />},{id:"card",l:"Pay with Card",sub: cards.length > 0 ? `${cards.length} card${cards.length>1?"s":""} saved` : "No cards yet",icon:<I.CreditCard />}].map(m => (
                 <button key={m.id} onClick={() => { setPayMethod(m.id); setError(""); }} style={{ flex: 1, padding: "18px", borderRadius: "14px", border: `1.5px solid ${payMethod===m.id ? c.accent : c.border}`, background: payMethod===m.id ? c.accent+"10" : "transparent", cursor: "pointer", textAlign: "left" }}>
@@ -580,19 +583,19 @@ const CheckoutPage = ({ items, onBack, token, user, refreshUser, onComplete, onG
           </div>}
         </div>
         <div style={{ background: c.cardBg, borderRadius: "18px", padding: "28px", border: `1px solid ${c.border}`, position: "sticky", top: "80px" }}>
-          <h3 style={{ fontSize: "18px", fontWeight: "600", color: c.text, margin: "0 0 20px" }}>Order Summary</h3>
+          <h3 style={{ fontSize: "18px", fontWeight: "600", color: c.text, margin: "0 0 20px" }}>{t("orderSummary")}</h3>
           {items.map((it,i) => <div key={i} style={{ display: "flex", gap: "10px", marginBottom: "12px", alignItems: "center" }}>
             <div style={{ width: "40px", height: "40px", borderRadius: "8px", background: c.pillBg, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "18px", fontWeight: "700", color: c.textSec, flexShrink: 0 }}>{it.emoji_icon}</div>
             <div style={{ flex: 1, minWidth: 0 }}><p style={{ fontSize: "13px", color: c.text, fontWeight: "500", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{it.name}</p><p style={{ fontSize: "12px", color: c.textSec }}>Qty: {it.qty||1}</p></div>
             <span style={{ fontSize: "14px", fontWeight: "600", color: c.text }}>${(parseFloat(it.price)*(it.qty||1)).toFixed(2)}</span>
           </div>)}
           <div style={{ borderTop: `1px solid ${c.border}`, marginTop: "8px", paddingTop: "12px" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px", fontSize: "14px" }}><span style={{ color: c.textSec }}>Subtotal</span><span style={{ color: c.text }}>${subtotal.toFixed(2)}</span></div>
+            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px", fontSize: "14px" }}><span style={{ color: c.textSec }}>{t("subtotal")}</span><span style={{ color: c.text }}>${subtotal.toFixed(2)}</span></div>
             <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px", fontSize: "14px" }}><span style={{ color: c.textSec }}>Shipping</span><span style={{ color: "#34c759" }}>Free</span></div>
             <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px", fontSize: "14px" }}><span style={{ color: c.textSec }}>Tax (8%)</span><span style={{ color: c.text }}>${tax.toFixed(2)}</span></div>
             <div style={{ borderTop: `1px solid ${c.border}`, marginTop: "8px", paddingTop: "12px", display: "flex", justifyContent: "space-between" }}><span style={{ fontSize: "18px", fontWeight: "600", color: c.text }}>Total</span><span style={{ fontSize: "18px", fontWeight: "700", color: c.text }}>${total.toFixed(2)}</span></div>
           </div>
-          <Btn full disabled={processing} onClick={handlePay} style={{ marginTop: "24px", padding: "16px", fontSize: "17px" }}>{processing ? "Processing..." : step === 1 ? "Continue to Payment" : `Pay $${total.toFixed(2)}`}</Btn>
+          <Btn full disabled={processing} onClick={handlePay} style={{ marginTop: "24px", padding: "16px", fontSize: "17px" }}>{processing ? t("processing") : step === 1 ? t("continueToPayment") : `Pay $${total.toFixed(2)}`}</Btn>
         </div>
       </div>
     </div>
@@ -604,12 +607,13 @@ const CheckoutPage = ({ items, onBack, token, user, refreshUser, onComplete, onG
 // ════════════════════════════════════════
 const CartPage = ({ cart, onUpdateQty, onRemove, onBack, onCheckout }) => {
   const c = useColors();
+  const t = useT();
   const total = cart.reduce((s,i) => s + parseFloat(i.price) * i.qty, 0);
-  if (cart.length === 0) return <div style={{ maxWidth: "980px", margin: "0 auto", padding: "40px 20px" }}><button onClick={onBack} style={{ display: "flex", alignItems: "center", gap: "6px", background: "none", border: "none", color: c.accent, fontSize: "16px", cursor: "pointer", marginBottom: "10px", fontWeight: "500" }}><I.ArrowLeft /> Back</button><h1 style={{ fontSize: "36px", fontWeight: "700", color: c.text, letterSpacing: "-0.03em", marginBottom: "32px" }}>Your Bag</h1><div style={{ textAlign: "center", padding: "80px" }}><p style={{ fontSize: "20px", color: c.textSec }}>Your bag is empty</p></div></div>;
+  if (cart.length === 0) return <div style={{ maxWidth: "980px", margin: "0 auto", padding: "40px 20px" }}><button onClick={onBack} style={{ display: "flex", alignItems: "center", gap: "6px", background: "none", border: "none", color: c.accent, fontSize: "16px", cursor: "pointer", marginBottom: "10px", fontWeight: "500" }}><I.ArrowLeft /> Back</button><h1 style={{ fontSize: "36px", fontWeight: "700", color: c.text, letterSpacing: "-0.03em", marginBottom: "32px" }}>{t("yourBag")}</h1><div style={{ textAlign: "center", padding: "80px" }}><p style={{ fontSize: "20px", color: c.textSec }}>{t("bagEmpty")}</p></div></div>;
   return (
     <div style={{ maxWidth: "980px", margin: "0 auto", padding: "40px 20px" }}>
       <button onClick={onBack} style={{ display: "flex", alignItems: "center", gap: "6px", background: "none", border: "none", color: c.accent, fontSize: "16px", cursor: "pointer", marginBottom: "10px", fontWeight: "500" }}><I.ArrowLeft /> Continue shopping</button>
-      <h1 style={{ fontSize: "36px", fontWeight: "700", color: c.text, letterSpacing: "-0.03em", marginBottom: "32px" }}>Your Bag</h1>
+      <h1 style={{ fontSize: "36px", fontWeight: "700", color: c.text, letterSpacing: "-0.03em", marginBottom: "32px" }}>{t("yourBag")}</h1>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 340px", gap: "40px", alignItems: "start" }}>
         <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
           {cart.map(item => <div key={item.id} style={{ display: "flex", gap: "20px", padding: "20px", background: c.cardBg, borderRadius: "16px", border: `1px solid ${c.border}` }}>
@@ -629,11 +633,11 @@ const CartPage = ({ cart, onUpdateQty, onRemove, onBack, onCheckout }) => {
           </div>)}
         </div>
         <div style={{ background: c.cardBg, borderRadius: "18px", padding: "28px", border: `1px solid ${c.border}`, position: "sticky", top: "80px" }}>
-          <h3 style={{ fontSize: "18px", fontWeight: "600", color: c.text, margin: "0 0 20px" }}>Order Summary</h3>
-          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "12px" }}><span style={{ color: c.textSec }}>Subtotal</span><span style={{ color: c.text, fontWeight: "500" }}>${total.toFixed(2)}</span></div>
+          <h3 style={{ fontSize: "18px", fontWeight: "600", color: c.text, margin: "0 0 20px" }}>{t("orderSummary")}</h3>
+          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "12px" }}><span style={{ color: c.textSec }}>{t("subtotal")}</span><span style={{ color: c.text, fontWeight: "500" }}>${total.toFixed(2)}</span></div>
           <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "12px" }}><span style={{ color: c.textSec }}>Tax (8%)</span><span style={{ color: c.text, fontWeight: "500" }}>${(total*0.08).toFixed(2)}</span></div>
           <div style={{ borderTop: `1px solid ${c.border}`, marginTop: "16px", paddingTop: "16px", display: "flex", justifyContent: "space-between" }}><span style={{ fontSize: "18px", fontWeight: "600", color: c.text }}>Total</span><span style={{ fontSize: "18px", fontWeight: "700", color: c.text }}>${(total*1.08).toFixed(2)}</span></div>
-          <Btn full onClick={onCheckout} style={{ marginTop: "24px", padding: "16px", fontSize: "17px" }}>Checkout</Btn>
+          <Btn full onClick={onCheckout} style={{ marginTop: "24px", padding: "16px", fontSize: "17px" }}>{t("checkout")}</Btn>
         </div>
       </div>
     </div>
@@ -645,6 +649,7 @@ const CartPage = ({ cart, onUpdateQty, onRemove, onBack, onCheckout }) => {
 // ════════════════════════════════════════
 const OrdersPage = ({ token, onBack }) => {
   const c = useColors();
+  const t = useT();
   const [orders, setOrders] = useState([]); const [loading, setLoading] = useState(true);
   const [cancelOrderId, setCancelOrderId] = useState(null); const [cancelReason, setCancelReason] = useState(""); const [cancelError, setCancelError] = useState("");
   const [expandedOrder, setExpandedOrder] = useState(null);
@@ -667,8 +672,8 @@ const OrdersPage = ({ token, onBack }) => {
   return (
     <div style={{ maxWidth: "860px", margin: "0 auto", padding: "32px 20px" }}>
       <button onClick={onBack} style={{ display: "flex", alignItems: "center", gap: "6px", background: "none", border: "none", color: c.accent, fontSize: "16px", cursor: "pointer", marginBottom: "10px", fontWeight: "500" }}><I.ArrowLeft /> Back</button>
-      <h1 style={{ fontSize: "32px", fontWeight: "700", color: c.text, letterSpacing: "-0.03em", marginBottom: "32px" }}>My Orders</h1>
-      {loading ? <div style={{ textAlign: "center", padding: "60px" }}><Spinner /></div> : orders.length === 0 ? <div style={{ textAlign: "center", padding: "80px" }}><div style={{ fontSize: "48px", marginBottom: "16px" }}>📦</div><p style={{ fontSize: "18px", color: c.textSec }}>No orders yet. Start shopping!</p></div> :
+      <h1 style={{ fontSize: "32px", fontWeight: "700", color: c.text, letterSpacing: "-0.03em", marginBottom: "32px" }}>{t("myOrders")}</h1>
+      {loading ? <div style={{ textAlign: "center", padding: "60px" }}><Spinner /></div> : orders.length === 0 ? <div style={{ textAlign: "center", padding: "80px" }}><div style={{ fontSize: "48px", marginBottom: "16px" }}>📦</div><p style={{ fontSize: "18px", color: c.textSec }}>{t("noOrdersYet")}</p></div> :
         <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
           {orders.map(o => {
             const expanded = expandedOrder === o.id;
@@ -726,17 +731,17 @@ const OrdersPage = ({ token, onBack }) => {
 
                   {/* Cancel button */}
                   {canCancel && !cr && cancelOrderId !== o.id && <div style={{ marginTop: "16px" }}>
-                    <button onClick={() => setCancelOrderId(o.id)} style={{ background: "none", border: `1px solid #ff3b30`, color: "#ff3b30", padding: "10px 20px", borderRadius: "10px", fontSize: "14px", fontWeight: "500", cursor: "pointer" }}>Request Cancellation</button>
+                    <button onClick={() => setCancelOrderId(o.id)} style={{ background: "none", border: `1px solid #ff3b30`, color: "#ff3b30", padding: "10px 20px", borderRadius: "10px", fontSize: "14px", fontWeight: "500", cursor: "pointer" }}>{t("requestCancellation")}</button>
                   </div>}
 
                   {/* Cancel form */}
                   {cancelOrderId === o.id && <div style={{ marginTop: "16px", padding: "20px", background: c.pillBg, borderRadius: "14px" }}>
-                    <p style={{ fontSize: "15px", fontWeight: "600", color: c.text, marginBottom: "12px" }}>Why do you want to cancel?</p>
+                    <p style={{ fontSize: "15px", fontWeight: "600", color: c.text, marginBottom: "12px" }}>{t("whyCancelQ")}</p>
                     {cancelError && <p style={{ fontSize: "13px", color: "#ff3b30", marginBottom: "8px" }}>{cancelError}</p>}
                     <textarea value={cancelReason} onChange={e => setCancelReason(e.target.value)} placeholder="Please explain your reason..." rows={3} style={{ width: "100%", padding: "12px", borderRadius: "10px", border: `1px solid ${c.border}`, background: c.cardBg, color: c.text, fontSize: "14px", resize: "vertical", outline: "none", boxSizing: "border-box" }} />
                     <div style={{ display: "flex", gap: "12px", marginTop: "12px" }}>
-                      <Btn onClick={() => handleCancel(o.id)} style={{ background: "#ff3b30", padding: "10px 20px", fontSize: "14px" }}>Submit Request</Btn>
-                      <Btn variant="outline" onClick={() => { setCancelOrderId(null); setCancelReason(""); setCancelError(""); }} style={{ padding: "10px 20px", fontSize: "14px" }}>Never mind</Btn>
+                      <Btn onClick={() => handleCancel(o.id)} style={{ background: "#ff3b30", padding: "10px 20px", fontSize: "14px" }}>{t("submitRequest")}</Btn>
+                      <Btn variant="outline" onClick={() => { setCancelOrderId(null); setCancelReason(""); setCancelError(""); }} style={{ padding: "10px 20px", fontSize: "14px" }}>{t("neverMind")}</Btn>
                     </div>
                   </div>}
                 </div>}
@@ -754,6 +759,7 @@ const OrdersPage = ({ token, onBack }) => {
 // ════════════════════════════════════════
 const AdminDashboard = ({ token }) => {
   const c = useColors();
+  const t = useT();
   const [tab, setTab] = useState("metrics"); const [stats, setStats] = useState(null); const [users, setUsers] = useState([]); const [finance, setFinance] = useState(null); const [orders, setOrders] = useState([]);
   useEffect(() => {
     api.get("/admin/stats", token).then(setStats).catch(() => {});
@@ -767,7 +773,7 @@ const AdminDashboard = ({ token }) => {
 
   return (
     <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "32px 20px" }}>
-      <h1 style={{ fontSize: "32px", fontWeight: "700", color: c.text, letterSpacing: "-0.03em", margin: "0 0 32px" }}>Admin Panel</h1>
+      <h1 style={{ fontSize: "32px", fontWeight: "700", color: c.text, letterSpacing: "-0.03em", margin: "0 0 32px" }}>{t("adminPanel")}</h1>
       <div style={{ display: "flex", gap: "4px", marginBottom: "32px", background: c.pillBg, borderRadius: "12px", padding: "4px", overflowX: "auto" }}>
         {tabs.map(t => <button key={t.id} onClick={() => setTab(t.id)} style={{ display: "flex", alignItems: "center", gap: "8px", padding: "10px 18px", borderRadius: "8px", border: "none", background: tab===t.id ? c.tabActive : "transparent", color: tab===t.id ? c.text : c.textSec, fontWeight: "500", fontSize: "14px", cursor: "pointer", whiteSpace: "nowrap", boxShadow: tab===t.id ? "0 1px 4px rgba(0,0,0,0.08)" : "none" }}>{t.i} {t.l}</button>)}
       </div>
@@ -807,7 +813,7 @@ const AdminDashboard = ({ token }) => {
           ))}
         </div>
         <div style={{ background: c.cardBg, borderRadius: "18px", padding: "28px", border: `1px solid ${c.border}` }}>
-          <h3 style={{ fontSize: "18px", fontWeight: "600", color: c.text, margin: "0 0 20px" }}>Revenue by Seller</h3>
+          <h3 style={{ fontSize: "18px", fontWeight: "600", color: c.text, margin: "0 0 20px" }}>{t("revenueBySeller")}</h3>
           <table style={{ width: "100%", borderCollapse: "collapse" }}>
             <thead><tr>{["Store","Seller","Gross Sales","Platform Fee","Net to Seller","Wallet Balance","Orders"].map(h => <th key={h} style={{ textAlign: "left", padding: "10px 12px", fontSize: "12px", fontWeight: "600", color: c.textSec, textTransform: "uppercase", borderBottom: `1px solid ${c.border}` }}>{h}</th>)}</tr></thead>
             <tbody>{finance.by_seller.map((s,i) => <tr key={i} style={{ borderBottom: `1px solid ${c.border}` }}>
@@ -822,14 +828,14 @@ const AdminDashboard = ({ token }) => {
           </table>
         </div>
         <div style={{ background: c.cardBg, borderRadius: "18px", padding: "28px", border: `1px solid ${c.border}` }}>
-          <h3 style={{ fontSize: "18px", fontWeight: "600", color: c.text, margin: "0 0 20px" }}>Revenue by Category</h3>
+          <h3 style={{ fontSize: "18px", fontWeight: "600", color: c.text, margin: "0 0 20px" }}>{t("revenueByCategory")}</h3>
           {finance.by_category.map((cat,i) => <div key={i} style={{ display: "flex", justifyContent: "space-between", padding: "12px 0", borderBottom: `1px solid ${c.border}` }}><span style={{ color: c.text }}>{cat.category}</span><span style={{ fontWeight: "600", color: c.text }}>${parseFloat(cat.revenue).toFixed(2)} ({cat.order_count} orders)</span></div>)}
         </div>
       </div>}
 
       {tab === "orders" && <div style={{ background: c.cardBg, borderRadius: "18px", padding: "28px", border: `1px solid ${c.border}` }}>
         <h3 style={{ fontSize: "18px", fontWeight: "600", color: c.text, margin: "0 0 20px" }}>All Orders ({orders.length})</h3>
-        {orders.length === 0 ? <p style={{ color: c.textSec, textAlign: "center", padding: "40px" }}>No orders yet</p> :
+        {orders.length === 0 ? <p style={{ color: c.textSec, textAlign: "center", padding: "40px" }}>{t("noOrdersYet")}</p> :
           <table style={{ width: "100%", borderCollapse: "collapse" }}>
             <thead><tr>{["Order","Buyer","Total","Status","Payment","Date"].map(h => <th key={h} style={{ textAlign: "left", padding: "12px 14px", fontSize: "12px", fontWeight: "600", color: c.textSec, textTransform: "uppercase", borderBottom: `1px solid ${c.border}` }}>{h}</th>)}</tr></thead>
             <tbody>{orders.map(o => <tr key={o.id} style={{ borderBottom: `1px solid ${c.border}` }}>
@@ -853,32 +859,33 @@ const AdminDashboard = ({ token }) => {
 const SettingsPage = ({ user, onBack }) => {
   const { theme, setTheme, accentColor, setAccentColor } = useTheme();
   const c = useColors();
+  const t = useT();
   const [tab, setTab] = useState("appearance");
   const accents = [{n:"Blue"},{n:"Purple"},{n:"Green"},{n:"Orange"},{n:"Pink"},{n:"Red"}];
   const accentVals = { Blue:["#0071e3","#0a84ff"], Purple:["#6e3adb","#bf5af2"], Green:["#248a3d","#30d158"], Orange:["#c93400","#ff9f0a"], Pink:["#d4317f","#ff375f"], Red:["#d70015","#ff453a"] };
   return (
     <div style={{ maxWidth: "760px", margin: "0 auto", padding: "32px 20px" }}>
       <button onClick={onBack} style={{ display: "flex", alignItems: "center", gap: "6px", background: "none", border: "none", color: c.accent, fontSize: "16px", cursor: "pointer", marginBottom: "10px", fontWeight: "500" }}><I.ArrowLeft /> Back</button>
-      <h1 style={{ fontSize: "32px", fontWeight: "700", color: c.text, letterSpacing: "-0.03em", marginBottom: "32px" }}>Settings</h1>
+      <h1 style={{ fontSize: "32px", fontWeight: "700", color: c.text, letterSpacing: "-0.03em", marginBottom: "32px" }}>{t("settings")}</h1>
       <div style={{ display: "flex", gap: "4px", marginBottom: "32px", background: c.pillBg, borderRadius: "12px", padding: "4px" }}>
-        {["appearance","account"].map(t => <button key={t} onClick={() => setTab(t)} style={{ flex: 1, padding: "10px", borderRadius: "8px", border: "none", background: tab===t ? c.tabActive : "transparent", color: tab===t ? c.text : c.textSec, fontWeight: "500", fontSize: "14px", cursor: "pointer", textTransform: "capitalize", boxShadow: tab===t ? "0 1px 4px rgba(0,0,0,0.08)" : "none" }}>{t}</button>)}
+        {["appearance","account"].map(tabId => <button key={t} onClick={() => setTab(t)} style={{ flex: 1, padding: "10px", borderRadius: "8px", border: "none", background: tab===t ? c.tabActive : "transparent", color: tab===t ? c.text : c.textSec, fontWeight: "500", fontSize: "14px", cursor: "pointer", textTransform: "capitalize", boxShadow: tab===t ? "0 1px 4px rgba(0,0,0,0.08)" : "none" }}>{t}</button>)}
       </div>
       {tab === "appearance" && <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
         <div style={{ background: c.cardBg, borderRadius: "18px", padding: "28px", border: `1px solid ${c.border}` }}>
-          <h3 style={{ fontSize: "18px", fontWeight: "600", color: c.text, margin: "0 0 20px" }}>Theme</h3>
+          <h3 style={{ fontSize: "18px", fontWeight: "600", color: c.text, margin: "0 0 20px" }}>{t("theme")}</h3>
           <div style={{ display: "flex", gap: "12px" }}>
             {[{id:"light",l:"Light",i:<I.Sun />},{id:"dark",l:"Dark",i:<I.Moon />}].map(t => <button key={t.id} onClick={() => setTheme(t.id)} style={{ flex: 1, padding: "20px", borderRadius: "14px", border: `2px solid ${theme===t.id ? c.accent : c.border}`, background: t.id==="dark" ? "#1a1a1a" : "#f5f5f7", color: t.id==="dark" ? "#f5f5f7" : "#1d1d1f", display: "flex", flexDirection: "column", alignItems: "center", gap: "10px", cursor: "pointer", fontSize: "14px", fontWeight: "500" }}>{t.i}{t.l}</button>)}
           </div>
         </div>
         <div style={{ background: c.cardBg, borderRadius: "18px", padding: "28px", border: `1px solid ${c.border}` }}>
-          <h3 style={{ fontSize: "18px", fontWeight: "600", color: c.text, margin: "0 0 20px" }}>Accent Color</h3>
+          <h3 style={{ fontSize: "18px", fontWeight: "600", color: c.text, margin: "0 0 20px" }}>{t("accentColor")}</h3>
           <div style={{ display: "flex", gap: "16px" }}>
             {accents.map(a => <button key={a.n} onClick={() => setAccentColor(a.n.toLowerCase())} style={{ width: "48px", height: "48px", borderRadius: "50%", background: theme==="dark" ? accentVals[a.n][1] : accentVals[a.n][0], border: accentColor===a.n.toLowerCase() ? `3px solid ${c.text}` : "3px solid transparent", cursor: "pointer", outline: accentColor===a.n.toLowerCase() ? `2px solid ${theme==="dark"?accentVals[a.n][1]:accentVals[a.n][0]}` : "none", outlineOffset: "2px" }} />)}
           </div>
         </div>
       </div>}
       {tab === "account" && <div style={{ background: c.cardBg, borderRadius: "18px", padding: "28px", border: `1px solid ${c.border}` }}>
-        <h3 style={{ fontSize: "18px", fontWeight: "600", color: c.text, margin: "0 0 24px" }}>Account Details</h3>
+        <h3 style={{ fontSize: "18px", fontWeight: "600", color: c.text, margin: "0 0 24px" }}>{t("accountDetails")}</h3>
         {[["Name", user.name],["Email", user.email],["Role", user.role],["Wallet", `$${parseFloat(user.wallet_balance).toFixed(2)}`],["Member Since", new Date(user.created_at).toLocaleDateString()]].map(([l,v],i) => <div key={i} style={{ display: "flex", justifyContent: "space-between", padding: "16px 0", borderBottom: `1px solid ${c.border}` }}><span style={{ fontSize: "14px", color: c.textSec }}>{l}</span><span style={{ fontSize: "14px", color: c.text, fontWeight: "500", textTransform: l==="Role" ? "capitalize" : "none" }}>{v}</span></div>)}
       </div>}
     </div>
@@ -890,6 +897,7 @@ const SettingsPage = ({ user, onBack }) => {
 // ════════════════════════════════════════
 const WalletPage = ({ token, user, refreshUser, onBack }) => {
   const c = useColors();
+  const t = useT();
   const [tab, setTab] = useState("overview");
   const [cards, setCards] = useState([]); const [transactions, setTransactions] = useState([]);
   const [topupAmount, setTopupAmount] = useState(""); const [selectedCard, setSelectedCard] = useState(null);
@@ -943,11 +951,11 @@ const WalletPage = ({ token, user, refreshUser, onBack }) => {
   return (
     <div style={{ maxWidth: "760px", margin: "0 auto", padding: "32px 20px" }}>
       <button onClick={onBack} style={{ display: "flex", alignItems: "center", gap: "6px", background: "none", border: "none", color: c.accent, fontSize: "16px", cursor: "pointer", marginBottom: "10px", fontWeight: "500" }}><I.ArrowLeft /> Back</button>
-      <h1 style={{ fontSize: "32px", fontWeight: "700", color: c.text, letterSpacing: "-0.03em", marginBottom: "8px" }}>Wallet</h1>
+      <h1 style={{ fontSize: "32px", fontWeight: "700", color: c.text, letterSpacing: "-0.03em", marginBottom: "8px" }}>{t("wallet")}</h1>
 
       {/* Balance Card */}
       <div style={{ background: `linear-gradient(135deg, ${c.accent}, ${c.accent}cc)`, borderRadius: "20px", padding: "32px", marginBottom: "28px", color: "#fff" }}>
-        <p style={{ fontSize: "14px", opacity: 0.8, marginBottom: "4px" }}>Available Balance</p>
+        <p style={{ fontSize: "14px", opacity: 0.8, marginBottom: "4px" }}>{t("availableBalance")}</p>
         <div style={{ fontSize: "42px", fontWeight: "700", letterSpacing: "-0.03em" }}>${parseFloat(user.wallet_balance).toFixed(2)}</div>
         <p style={{ fontSize: "13px", opacity: 0.7, marginTop: "8px" }}>{cards.length} card{cards.length !== 1 ? "s" : ""} linked</p>
       </div>
@@ -962,17 +970,17 @@ const WalletPage = ({ token, user, refreshUser, onBack }) => {
       {tab === "overview" && <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
           <div style={{ background: c.cardBg, borderRadius: "16px", padding: "24px", border: `1px solid ${c.border}` }}>
-            <p style={{ fontSize: "13px", color: c.textSec, marginBottom: "8px" }}>Total Deposited</p>
+            <p style={{ fontSize: "13px", color: c.textSec, marginBottom: "8px" }}>{t("totalDeposited")}</p>
             <p style={{ fontSize: "24px", fontWeight: "700", color: "#34c759" }}>${transactions.filter(t => t.type === "topup").reduce((s, t) => s + parseFloat(t.amount), 0).toFixed(2)}</p>
           </div>
           <div style={{ background: c.cardBg, borderRadius: "16px", padding: "24px", border: `1px solid ${c.border}` }}>
-            <p style={{ fontSize: "13px", color: c.textSec, marginBottom: "8px" }}>Total Spent</p>
+            <p style={{ fontSize: "13px", color: c.textSec, marginBottom: "8px" }}>{t("totalSpent")}</p>
             <p style={{ fontSize: "24px", fontWeight: "700", color: "#ff3b30" }}>${Math.abs(transactions.filter(t => t.type === "purchase").reduce((s, t) => s + parseFloat(t.amount), 0)).toFixed(2)}</p>
           </div>
         </div>
         <div style={{ background: c.cardBg, borderRadius: "16px", padding: "24px", border: `1px solid ${c.border}` }}>
-          <h3 style={{ fontSize: "16px", fontWeight: "600", color: c.text, margin: "0 0 16px" }}>Recent Transactions</h3>
-          {transactions.length === 0 ? <p style={{ color: c.textSec, fontSize: "14px" }}>No transactions yet. Add a card and top up to get started.</p> :
+          <h3 style={{ fontSize: "16px", fontWeight: "600", color: c.text, margin: "0 0 16px" }}>{t("recentTransactions")}</h3>
+          {transactions.length === 0 ? <p style={{ color: c.textSec, fontSize: "14px" }}>{t("noTransactions")}</p> :
             transactions.slice(0, 5).map(tx => (
               <div key={tx.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 0", borderBottom: `1px solid ${c.border}` }}>
                 <div><p style={{ fontSize: "14px", color: c.text, fontWeight: "500" }}>{tx.description}</p><p style={{ fontSize: "12px", color: c.textSec }}>{new Date(tx.created_at).toLocaleString()}</p></div>
@@ -984,8 +992,8 @@ const WalletPage = ({ token, user, refreshUser, onBack }) => {
       </div>}
 
       {tab === "topup" && <div style={{ background: c.cardBg, borderRadius: "18px", padding: "28px", border: `1px solid ${c.border}` }}>
-        <h3 style={{ fontSize: "18px", fontWeight: "600", color: c.text, margin: "0 0 20px" }}>Top Up Wallet</h3>
-        {cards.length === 0 ? <div style={{ textAlign: "center", padding: "32px" }}><p style={{ color: c.textSec, marginBottom: "16px" }}>You need to add a card first.</p><Btn onClick={() => setTab("cards")}>Add a Card</Btn></div> : <>
+        <h3 style={{ fontSize: "18px", fontWeight: "600", color: c.text, margin: "0 0 20px" }}>{t("topUpWalletTitle")}</h3>
+        {cards.length === 0 ? <div style={{ textAlign: "center", padding: "32px" }}><p style={{ color: c.textSec, marginBottom: "16px" }}>{t("needCardFirst")}</p><Btn onClick={() => setTab("cards")}>Add a Card</Btn></div> : <>
           <p style={{ fontSize: "13px", fontWeight: "600", color: c.textSec, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "12px" }}>Select card</p>
           {cards.map(cd => <button key={cd.id} onClick={() => setSelectedCard(cd.id)} style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 16px", borderRadius: "12px", border: `1.5px solid ${selectedCard===cd.id ? c.accent : c.border}`, background: selectedCard===cd.id ? c.accent+"10" : "transparent", cursor: "pointer", marginBottom: "8px", textAlign: "left" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "12px" }}><I.CreditCard /><span style={{ fontSize: "14px", fontWeight: "500", color: c.text }}>{cd.masked_number}</span><span style={{ fontSize: "13px", color: c.textSec }}>{cd.cardholder_name}</span></div>
@@ -997,7 +1005,7 @@ const WalletPage = ({ token, user, refreshUser, onBack }) => {
               {[50, 100, 200, 500, 1000, 5000].map(amt => <button key={amt} onClick={() => setTopupAmount(amt.toString())} style={{ padding: "10px 18px", borderRadius: "10px", border: `1.5px solid ${topupAmount===amt.toString() ? c.accent : c.border}`, background: topupAmount===amt.toString() ? c.accent+"10" : "transparent", color: topupAmount===amt.toString() ? c.accent : c.text, fontSize: "14px", fontWeight: "500", cursor: "pointer" }}>${amt}</button>)}
             </div>
             <Input label="Or enter custom amount" type="number" value={topupAmount} onChange={e => setTopupAmount(e.target.value)} placeholder="Enter amount" />
-            <Btn full disabled={loading} onClick={handleTopup} style={{ marginTop: "8px" }}>{loading ? "Processing..." : `Top Up $${topupAmount || "0"}`}</Btn>
+            <Btn full disabled={loading} onClick={handleTopup} style={{ marginTop: "8px" }}>{loading ? t("processing") : `Top Up $${topupAmount || "0"}`}</Btn>
           </div>
         </>}
       </div>}
@@ -1007,23 +1015,23 @@ const WalletPage = ({ token, user, refreshUser, onBack }) => {
           <div style={{ display: "flex", alignItems: "center", gap: "14px" }}><div style={{ width: "48px", height: "34px", borderRadius: "6px", background: c.accent+"20", display: "flex", alignItems: "center", justifyContent: "center", color: c.accent }}><I.CreditCard /></div>
             <div><p style={{ fontSize: "15px", fontWeight: "600", color: c.text }}>{cd.masked_number}</p><p style={{ fontSize: "13px", color: c.textSec }}>{cd.cardholder_name} · Exp {cd.expiry}</p></div>
           </div>
-          <div style={{ textAlign: "right" }}><p style={{ fontSize: "13px", color: c.textSec }}>Total topped up</p><p style={{ fontSize: "15px", fontWeight: "600", color: c.text }}>${parseFloat(cd.total_topped_up||0).toFixed(2)}</p></div>
+          <div style={{ textAlign: "right" }}><p style={{ fontSize: "13px", color: c.textSec }}>{t("totalToppedUp")}</p><p style={{ fontSize: "15px", fontWeight: "600", color: c.text }}>${parseFloat(cd.total_topped_up||0).toFixed(2)}</p></div>
         </div>)}
-        {!showAddCard ? <Btn variant="outline" full onClick={() => setShowAddCard(true)}>Add New Card</Btn> :
+        {!showAddCard ? <Btn variant="outline" full onClick={() => setShowAddCard(true)}>{t("addNewCard")}</Btn> :
           <div style={{ background: c.cardBg, borderRadius: "18px", padding: "28px", border: `1px solid ${c.border}` }}>
-            <h3 style={{ fontSize: "16px", fontWeight: "600", color: c.text, margin: "0 0 16px" }}>New Card</h3>
-            <Input label="Card number" value={cardNum} onChange={e => setCardNum(formatCard(e.target.value))} placeholder="1234 5678 9012 3456" style={{ fontFamily: "monospace" }} />
-            <Input label="Cardholder name" value={cardName} onChange={e => setCardName(e.target.value)} placeholder="John Appleseed" />
-            <Input label="Expiry" value={cardExp} onChange={e => setCardExp(formatExp(e.target.value))} placeholder="MM/YY" />
+            <h3 style={{ fontSize: "16px", fontWeight: "600", color: c.text, margin: "0 0 16px" }}>{t("newCard")}</h3>
+            <Input label={t("cardNumber")} value={cardNum} onChange={e => setCardNum(formatCard(e.target.value))} placeholder="1234 5678 9012 3456" style={{ fontFamily: "monospace" }} />
+            <Input label={t("cardholderName")} value={cardName} onChange={e => setCardName(e.target.value)} placeholder="John Appleseed" />
+            <Input label={t("expiry")} value={cardExp} onChange={e => setCardExp(formatExp(e.target.value))} placeholder="MM/YY" />
             <div style={{ display: "flex", gap: "12px" }}><Btn full onClick={handleAddCard}>Add Card</Btn><Btn variant="outline" onClick={() => setShowAddCard(false)}>Cancel</Btn></div>
-            <p style={{ fontSize: "12px", color: c.textSec, marginTop: "12px" }}>Any 16-digit number works for this demo.</p>
+            <p style={{ fontSize: "12px", color: c.textSec, marginTop: "12px" }}>{t("anyDigitsWork")}</p>
           </div>
         }
       </div>}
 
       {tab === "history" && <div style={{ background: c.cardBg, borderRadius: "18px", padding: "28px", border: `1px solid ${c.border}` }}>
-        <h3 style={{ fontSize: "18px", fontWeight: "600", color: c.text, margin: "0 0 20px" }}>All Transactions</h3>
-        {transactions.length === 0 ? <p style={{ color: c.textSec, textAlign: "center", padding: "40px" }}>No transactions yet</p> :
+        <h3 style={{ fontSize: "18px", fontWeight: "600", color: c.text, margin: "0 0 20px" }}>{t("allTransactions")}</h3>
+        {transactions.length === 0 ? <p style={{ color: c.textSec, textAlign: "center", padding: "40px" }}>{t("noTransactionsYet")}</p> :
           transactions.map(tx => (
             <div key={tx.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "14px 0", borderBottom: `1px solid ${c.border}` }}>
               <div><p style={{ fontSize: "14px", color: c.text, fontWeight: "500" }}>{tx.description}</p><p style={{ fontSize: "12px", color: c.textSec }}>{tx.type.replace("_", " ")} · {new Date(tx.created_at).toLocaleString()}</p></div>
@@ -1041,6 +1049,7 @@ const WalletPage = ({ token, user, refreshUser, onBack }) => {
 // ════════════════════════════════════════
 const SellerEarningsPage = ({ token, onBack }) => {
   const c = useColors();
+  const t = useT();
   const [data, setData] = useState(null); const [loading, setLoading] = useState(true);
   useEffect(() => { api.get("/wallet/seller-earnings", token).then(setData).catch(err => console.error(err)).finally(() => setLoading(false)); }, []);
   if (loading) return <div style={{ textAlign: "center", padding: "80px" }}><Spinner /></div>;
@@ -1050,7 +1059,7 @@ const SellerEarningsPage = ({ token, onBack }) => {
   return (
     <div style={{ maxWidth: "900px", margin: "0 auto", padding: "32px 20px" }}>
       <button onClick={onBack} style={{ display: "flex", alignItems: "center", gap: "6px", background: "none", border: "none", color: c.accent, fontSize: "16px", cursor: "pointer", marginBottom: "10px", fontWeight: "500" }}><I.ArrowLeft /> Back</button>
-      <h1 style={{ fontSize: "32px", fontWeight: "700", color: c.text, letterSpacing: "-0.03em", marginBottom: "8px" }}>Earnings</h1>
+      <h1 style={{ fontSize: "32px", fontWeight: "700", color: c.text, letterSpacing: "-0.03em", marginBottom: "8px" }}>{t("earnings")}</h1>
       <p style={{ fontSize: "17px", color: c.textSec, marginBottom: "32px" }}>{s.store_name || "Your Store"}</p>
 
       {/* Summary Cards */}
@@ -1068,18 +1077,18 @@ const SellerEarningsPage = ({ token, onBack }) => {
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px", marginBottom: "32px" }}>
         <div style={{ background: c.cardBg, borderRadius: "16px", padding: "24px", border: `1px solid ${c.border}` }}>
-          <p style={{ fontSize: "13px", color: c.textSec }}>Total Orders</p>
+          <p style={{ fontSize: "13px", color: c.textSec }}>{t("totalOrders")}</p>
           <p style={{ fontSize: "28px", fontWeight: "700", color: c.text }}>{s.total_orders}</p>
         </div>
         <div style={{ background: c.cardBg, borderRadius: "16px", padding: "24px", border: `1px solid ${c.border}` }}>
-          <p style={{ fontSize: "13px", color: c.textSec }}>Items Sold</p>
+          <p style={{ fontSize: "13px", color: c.textSec }}>{t("itemsSold")}</p>
           <p style={{ fontSize: "28px", fontWeight: "700", color: c.text }}>{s.items_sold}</p>
         </div>
       </div>
 
       {/* Earnings by Product */}
       {data.by_product.length > 0 && <div style={{ background: c.cardBg, borderRadius: "18px", padding: "28px", border: `1px solid ${c.border}`, marginBottom: "24px" }}>
-        <h3 style={{ fontSize: "18px", fontWeight: "600", color: c.text, margin: "0 0 20px" }}>Earnings by Product</h3>
+        <h3 style={{ fontSize: "18px", fontWeight: "600", color: c.text, margin: "0 0 20px" }}>{t("earningsByProduct")}</h3>
         <table style={{ width: "100%", borderCollapse: "collapse" }}>
           <thead><tr>{["Product","Price","Units Sold","Gross","Commission","Net Earnings"].map(h => <th key={h} style={{ textAlign: "left", padding: "10px 12px", fontSize: "12px", fontWeight: "600", color: c.textSec, textTransform: "uppercase", borderBottom: `1px solid ${c.border}` }}>{h}</th>)}</tr></thead>
           <tbody>{data.by_product.map((p,i) => <tr key={i} style={{ borderBottom: `1px solid ${c.border}` }}>
@@ -1095,7 +1104,7 @@ const SellerEarningsPage = ({ token, onBack }) => {
 
       {/* Recent Transactions */}
       <div style={{ background: c.cardBg, borderRadius: "18px", padding: "28px", border: `1px solid ${c.border}` }}>
-        <h3 style={{ fontSize: "18px", fontWeight: "600", color: c.text, margin: "0 0 20px" }}>Recent Transactions</h3>
+        <h3 style={{ fontSize: "18px", fontWeight: "600", color: c.text, margin: "0 0 20px" }}>{t("recentTransactions")}</h3>
         {data.transactions.length === 0 ? <p style={{ color: c.textSec, textAlign: "center", padding: "32px" }}>No transactions yet. Earnings appear here when buyers purchase your products.</p> :
           data.transactions.map(tx => (
             <div key={tx.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 0", borderBottom: `1px solid ${c.border}` }}>
@@ -1114,6 +1123,7 @@ const SellerEarningsPage = ({ token, onBack }) => {
 // ════════════════════════════════════════
 const SellerOrdersPage = ({ token, onBack }) => {
   const c = useColors();
+  const t = useT();
   const [orders, setOrders] = useState([]); const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("all");
   const [respondingTo, setRespondingTo] = useState(null); const [sellerResponse, setSellerResponse] = useState("");
@@ -1151,7 +1161,7 @@ const SellerOrdersPage = ({ token, onBack }) => {
 
   const statusColor = s => ({ Processing: c.accent, Confirmed: "#007aff", Shipped: "#5856d6", Delivered: "#34c759", "Cancel Requested": "#ff9f0a", Cancelled: "#ff3b30", Refunded: "#8e8e93" }[s] || c.textSec);
   const nextStatus = s => ({ Processing: "Confirmed", Confirmed: "Shipped", Shipped: "Delivered" }[s]);
-  const nextLabel = s => ({ Processing: "Confirm Order", Confirmed: "Mark as Shipped", Shipped: "Mark Delivered" }[s]);
+  const nextLabel = s => ({ Processing: "Confirm Order", Confirmed: t("markShipped"), Shipped: t("markDelivered") }[s]);
 
   const filtered = filter === "all" ? orders : filter === "cancels" ? orders.filter(o => o.status === "Cancel Requested") : orders.filter(o => o.status === filter);
   const cancelCount = orders.filter(o => o.status === "Cancel Requested").length;
@@ -1161,7 +1171,7 @@ const SellerOrdersPage = ({ token, onBack }) => {
       <button onClick={onBack} style={{ display: "flex", alignItems: "center", gap: "6px", background: "none", border: "none", color: c.accent, fontSize: "16px", cursor: "pointer", marginBottom: "10px", fontWeight: "500" }}><I.ArrowLeft /> Back</button>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "28px" }}>
         <div>
-          <h1 style={{ fontSize: "32px", fontWeight: "700", color: c.text, letterSpacing: "-0.03em", margin: "0 0 4px" }}>Incoming Orders</h1>
+          <h1 style={{ fontSize: "32px", fontWeight: "700", color: c.text, letterSpacing: "-0.03em", margin: "0 0 4px" }}>{t("incomingOrders")}</h1>
           <p style={{ fontSize: "15px", color: c.textSec }}>{orders.length} total orders{cancelCount > 0 ? ` · ${cancelCount} cancellation request${cancelCount > 1 ? "s" : ""}` : ""}</p>
         </div>
       </div>
@@ -1191,7 +1201,7 @@ const SellerOrdersPage = ({ token, onBack }) => {
               {hasPendingCancel && (
                 <div style={{ background: "#ff9f0a14", padding: "12px 24px", display: "flex", alignItems: "center", gap: "10px", borderBottom: `1px solid #ff9f0a30` }}>
                   <I.AlertTriangle />
-                  <span style={{ fontSize: "14px", fontWeight: "600", color: "#ff9f0a" }}>Cancellation requested by buyer</span>
+                  <span style={{ fontSize: "14px", fontWeight: "600", color: "#ff9f0a" }}>{t("cancelledByBuyer")}</span>
                 </div>
               )}
 
@@ -1239,7 +1249,7 @@ const SellerOrdersPage = ({ token, onBack }) => {
                 {/* Cancel request details + approve/reject */}
                 {hasPendingCancel && (
                   <div style={{ marginTop: "12px", padding: "20px", borderRadius: "14px", background: "#ff9f0a08", border: "1px solid #ff9f0a22" }}>
-                    <p style={{ fontSize: "14px", fontWeight: "600", color: "#ff9f0a", marginBottom: "8px" }}>Buyer's cancellation reason:</p>
+                    <p style={{ fontSize: "14px", fontWeight: "600", color: "#ff9f0a", marginBottom: "8px" }}>{t("buyerCancelReason")}</p>
                     <p style={{ fontSize: "14px", color: c.text, marginBottom: "16px", lineHeight: "1.5", fontStyle: "italic" }}>"{cr.reason}"</p>
 
                     {!isResponding ? (
@@ -1266,15 +1276,15 @@ const SellerOrdersPage = ({ token, onBack }) => {
                     <Btn onClick={() => handleStatusUpdate(o.id, nextStatus(o.status))} disabled={isLoading} style={{ padding: "10px 24px", fontSize: "14px" }}>
                       {isLoading ? "Updating..." : nextLabel(o.status)}
                     </Btn>
-                    {o.status === "Processing" && <p style={{ fontSize: "12px", color: c.textSec }}>Confirm to start preparing this order</p>}
-                    {o.status === "Confirmed" && <p style={{ fontSize: "12px", color: c.textSec }}>Mark when you've handed it to the courier</p>}
-                    {o.status === "Shipped" && <p style={{ fontSize: "12px", color: c.textSec }}>Mark when buyer has received the item</p>}
+                    {o.status === "Processing" && <p style={{ fontSize: "12px", color: c.textSec }}>{t("confirmPrepare")}</p>}
+                    {o.status === "Confirmed" && <p style={{ fontSize: "12px", color: c.textSec }}>{t("handedCourier")}</p>}
+                    {o.status === "Shipped" && <p style={{ fontSize: "12px", color: c.textSec }}>{t("buyerReceived")}</p>}
                   </div>
                 )}
 
                 {/* Completed/cancelled states */}
-                {o.status === "Delivered" && <div style={{ marginTop: "16px", padding: "14px", borderRadius: "10px", background: "#34c75910", display: "flex", alignItems: "center", gap: "10px" }}><I.Check /><span style={{ fontSize: "14px", color: "#34c759", fontWeight: "500" }}>Order completed successfully</span></div>}
-                {o.status === "Refunded" && <div style={{ marginTop: "16px", padding: "14px", borderRadius: "10px", background: "#8e8e9310", display: "flex", alignItems: "center", gap: "10px" }}><span style={{ fontSize: "14px", color: "#8e8e93", fontWeight: "500" }}>Order refunded to buyer</span></div>}
+                {o.status === "Delivered" && <div style={{ marginTop: "16px", padding: "14px", borderRadius: "10px", background: "#34c75910", display: "flex", alignItems: "center", gap: "10px" }}><I.Check /><span style={{ fontSize: "14px", color: "#34c759", fontWeight: "500" }}>{t("orderCompleted")}</span></div>}
+                {o.status === "Refunded" && <div style={{ marginTop: "16px", padding: "14px", borderRadius: "10px", background: "#8e8e9310", display: "flex", alignItems: "center", gap: "10px" }}><span style={{ fontSize: "14px", color: "#8e8e93", fontWeight: "500" }}>{t("orderRefunded")}</span></div>}
               </div>
             </div>
           );
@@ -1490,10 +1500,10 @@ function AppInner() {
 
             <footer style={{ borderTop: `1px solid ${c.border}`, padding: "40px 0" }}>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "32px", marginBottom: "32px" }}>
-                {[{t:"Shop",l:["Categories","Deals","Trending"]},{t:"Sell",l:["Start Selling","Seller Hub","Fees"]},{t:"Help",l:["Help Center","Contact Us","Returns"]},{t:"About",l:["About Us","Careers","Press"]}].map((col,i) => <div key={i}><h4 style={{ fontSize: "13px", fontWeight: "600", color: c.text, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "16px" }}>{col.t}</h4>{col.l.map(link => <p key={link} style={{ fontSize: "14px", color: c.textSec, marginBottom: "10px", cursor: "pointer" }}>{link}</p>)}</div>)}
+                {[{t:"shop",l:["Categories","Deals","Trending"]},{t:"sell",l:["Start Selling","Seller Hub","Fees"]},{t:"help",l:["Help Center","Contact Us","Returns"]},{t:"about",l:["About Us","Careers","Press"]}].map((col,i) => <div key={i}><h4 style={{ fontSize: "13px", fontWeight: "600", color: c.text, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "16px" }}>{col.t}</h4>{col.l.map(link => <p key={link} style={{ fontSize: "14px", color: c.textSec, marginBottom: "10px", cursor: "pointer" }}>{link}</p>)}</div>)}
               </div>
               <div style={{ borderTop: `1px solid ${c.border}`, paddingTop: "24px", display: "flex", justifyContent: "space-between" }}>
-                <p style={{ fontSize: "13px", color: c.textSec }}>2026 Marketplace. All rights reserved.</p>
+                <p style={{ fontSize: "13px", color: c.textSec }}>{t("allRightsReserved")}</p>
                 <div style={{ display: "flex", gap: "20px" }}>{["Terms","Privacy","Cookies"].map(l => <span key={l} style={{ fontSize: "13px", color: c.textSec, cursor: "pointer" }}>{l}</span>)}</div>
               </div>
             </footer>
