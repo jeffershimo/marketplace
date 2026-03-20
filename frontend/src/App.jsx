@@ -70,8 +70,8 @@ const TRANSLATIONS = {
     balance: "Balance", noCardsSaved: "No cards saved. Add one in your Wallet page.",
     goToWallet: "Go to Wallet", topUpWallet: "Top Up Wallet",
     needMore: "more", insufficientBalance: "Insufficient balance",
-    afterPurchase: "After purchase", continueToPayment: t("continueToPayment"),
-    pay: "Pay", processing: t("processing"),
+    afterPurchase: "After purchase", continueToPayment: "Continue to Payment",
+    pay: "Pay", processing: "Processing...",
     orderConfirmed: "Order Confirmed", thankYouPurchase: "Thank you for your purchase!",
     orderId: "Order ID", shipTo: "Ship to", phone: "Phone",
     fillAddress: "Please fill in your shipping address.",
@@ -84,15 +84,15 @@ const TRANSLATIONS = {
     neverMind: "Never mind", cancelRequestPending: "Cancel request: pending",
     cancelRequestApproved: "Cancel request: approved", cancelRequestRejected: "Cancel request: rejected",
     reason: "Reason", sellerResponse: "Seller response", provideReason: "Please provide a reason.",
-    paymentAndContact: t("paymentAndContact"),
+    paymentAndContact: "PAYMENT & CONTACT",
     // Seller Orders
     totalOrders: "total orders", cancellationRequests: "cancellation request",
     all: "All", confirmed: "Confirmed", shipped: "Shipped", delivered: "Delivered",
     cancellations: "Cancellations", buyerCancelReason: "Buyer's cancellation reason:",
     approveRefund: "Approve Refund", reject: "Reject", rejectExplain: "Explain why you're rejecting (optional):",
     confirmReject: "Confirm Reject", cancel: "Cancel", confirmOrder: "Confirm Order",
-    markShipped: t("markShipped"), markDelivered: t("markDelivered"),
-    confirmPrepare: t("confirmPrepare"),
+    markShipped: "Mark as Shipped", markDelivered: "Mark Delivered",
+    confirmPrepare: "Confirm to start preparing this order",
     handedCourier: "Mark when you've handed it to the courier",
     buyerReceived: "Mark when buyer has received the item",
     orderCompleted: "Order completed successfully", orderRefunded: "Order refunded to buyer",
@@ -775,7 +775,7 @@ const AdminDashboard = ({ token }) => {
     <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "32px 20px" }}>
       <h1 style={{ fontSize: "32px", fontWeight: "700", color: c.text, letterSpacing: "-0.03em", margin: "0 0 32px" }}>{t("adminPanel")}</h1>
       <div style={{ display: "flex", gap: "4px", marginBottom: "32px", background: c.pillBg, borderRadius: "12px", padding: "4px", overflowX: "auto" }}>
-        {tabs.map(t => <button key={t.id} onClick={() => setTab(t.id)} style={{ display: "flex", alignItems: "center", gap: "8px", padding: "10px 18px", borderRadius: "8px", border: "none", background: tab===t.id ? c.tabActive : "transparent", color: tab===t.id ? c.text : c.textSec, fontWeight: "500", fontSize: "14px", cursor: "pointer", whiteSpace: "nowrap", boxShadow: tab===t.id ? "0 1px 4px rgba(0,0,0,0.08)" : "none" }}>{t.i} {t.l}</button>)}
+        {tabs.map(tb => <button key={tb.id} onClick={() => setTab(tb.id)} style={{ display: "flex", alignItems: "center", gap: "8px", padding: "10px 18px", borderRadius: "8px", border: "none", background: tab===tb.id ? c.tabActive : "transparent", color: tab===tb.id ? c.text : c.textSec, fontWeight: "500", fontSize: "14px", cursor: "pointer", whiteSpace: "nowrap", boxShadow: tab===tb.id ? "0 1px 4px rgba(0,0,0,0.08)" : "none" }}>{tb.i} {tb.l}</button>)}
       </div>
 
       {tab === "metrics" && <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "16px" }}>
@@ -874,7 +874,7 @@ const SettingsPage = ({ user, onBack }) => {
         <div style={{ background: c.cardBg, borderRadius: "18px", padding: "28px", border: `1px solid ${c.border}` }}>
           <h3 style={{ fontSize: "18px", fontWeight: "600", color: c.text, margin: "0 0 20px" }}>{t("theme")}</h3>
           <div style={{ display: "flex", gap: "12px" }}>
-            {[{id:"light",l:"Light",i:<I.Sun />},{id:"dark",l:"Dark",i:<I.Moon />}].map(t => <button key={t.id} onClick={() => setTheme(t.id)} style={{ flex: 1, padding: "20px", borderRadius: "14px", border: `2px solid ${theme===t.id ? c.accent : c.border}`, background: t.id==="dark" ? "#1a1a1a" : "#f5f5f7", color: t.id==="dark" ? "#f5f5f7" : "#1d1d1f", display: "flex", flexDirection: "column", alignItems: "center", gap: "10px", cursor: "pointer", fontSize: "14px", fontWeight: "500" }}>{t.i}{t.l}</button>)}
+            {[{id:"light",l:"Light",i:<I.Sun />},{id:"dark",l:"Dark",i:<I.Moon />}].map(tb => <button key={tb.id} onClick={() => setTheme(tb.id)} style={{ flex: 1, padding: "20px", borderRadius: "14px", border: `2px solid ${theme===tb.id ? c.accent : c.border}`, background: tb.id==="dark" ? "#1a1a1a" : "#f5f5f7", color: tb.id==="dark" ? "#f5f5f7" : "#1d1d1f", display: "flex", flexDirection: "column", alignItems: "center", gap: "10px", cursor: "pointer", fontSize: "14px", fontWeight: "500" }}>{tb.i}{tb.l}</button>)}
           </div>
         </div>
         <div style={{ background: c.cardBg, borderRadius: "18px", padding: "28px", border: `1px solid ${c.border}` }}>
@@ -964,7 +964,7 @@ const WalletPage = ({ token, user, refreshUser, onBack }) => {
       {error && <div style={{ background: "#ff3b3014", border: "1px solid #ff3b3044", borderRadius: "10px", padding: "12px 16px", marginBottom: "16px", fontSize: "14px", color: "#ff3b30", fontWeight: "500" }}>{error}</div>}
 
       <div style={{ display: "flex", gap: "4px", marginBottom: "28px", background: c.pillBg, borderRadius: "12px", padding: "4px" }}>
-        {["overview","topup","cards","history"].map(t => <button key={t} onClick={() => { setTab(t); setError(""); }} style={{ flex: 1, padding: "10px", borderRadius: "8px", border: "none", background: tab===t ? c.tabActive : "transparent", color: tab===t ? c.text : c.textSec, fontWeight: "500", fontSize: "14px", cursor: "pointer", textTransform: "capitalize", boxShadow: tab===t ? "0 1px 4px rgba(0,0,0,0.08)" : "none" }}>{t}</button>)}
+        {["overview","topup","cards","history"].map(tb => <button key={tb} onClick={() => { setTab(tb); setError(""); }} style={{ flex: 1, padding: "10px", borderRadius: "8px", border: "none", background: tab===tb ? c.tabActive : "transparent", color: tab===tb ? c.text : c.textSec, fontWeight: "500", fontSize: "14px", cursor: "pointer", textTransform: "capitalize", boxShadow: tab===tb ? "0 1px 4px rgba(0,0,0,0.08)" : "none" }}>{tb}</button>)}
       </div>
 
       {tab === "overview" && <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
