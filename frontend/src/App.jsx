@@ -31,6 +31,214 @@ const api = {
 // ─── Contexts ───
 const ThemeContext = createContext();
 const useTheme = () => useContext(ThemeContext);
+const LangContext = createContext();
+const useLang = () => useContext(LangContext);
+
+// ─── Translation Dictionary ───
+const TRANSLATIONS = {
+  en: {
+    // General
+    marketplace: "Marketplace", searchMarketplace: "Search marketplace", signIn: "Sign In", signOut: "Sign Out",
+    register: "Register", login: "Login", buyAndSell: "Buy and sell, beautifully.",
+    buyer: "Buyer", seller: "Seller", admin: "Admin", email: "Email", password: "Password",
+    fullName: "Full name", iAmA: "I am a", createAccount: "Create Account", forgotPassword: "Forgot password?",
+    newAccountWallet: "New accounts start with $0 wallet balance", pleaseWait: "Please wait...",
+    adminHint: "Admin: admin@gmail.com / admin123456", fillAllFields: "Please fill in all fields.",
+    pwMin6: "Password must be at least 6 characters.",
+    // Nav
+    wallet: "Wallet", myOrders: "My Orders", incomingOrders: "Incoming Orders", myEarnings: "My Earnings",
+    settings: "Settings", browseStore: "Browse Store", adminPanel: "Admin Panel",
+    // Home
+    springCollection: "SPRING COLLECTION", discoverNew: "Discover what's new.",
+    curatedCollections: "Curated collections from the best sellers on our platform.",
+    todaysDeals: "Today's Deals", trendingNow: "Trending Now", allProducts: "All Products",
+    resultsFor: "Results for", items: "items", noProductsFound: "No products found",
+    freeShipping: "Free shipping", sold: "sold",
+    // Product Detail
+    back: "Back", condition: "Condition", inStock: "In Stock", shipping: "Shipping",
+    free: "Free", quantity: "Quantity", addToBag: "Add to Bag", buyNow: "Buy Now",
+    youSave: "You save", reviews: "reviews", units: "units",
+    // Cart
+    yourBag: "Your Bag", continueShopping: "Continue shopping", bagEmpty: "Your bag is empty",
+    orderSummary: "Order Summary", subtotal: "Subtotal", tax: "Tax", total: "Total",
+    checkout: "Checkout",
+    // Checkout
+    shippingAddress: "Shipping Address", address: "Address", city: "City",
+    postalCode: "Postal code", country: "Country", contactInfo: "Contact Information",
+    phoneNumber: "Phone number", deliveryUpdates: "We'll send delivery updates to this number.",
+    payment: "Payment", paymentMethod: "Payment Method", payWithCard: "Pay with Card",
+    balance: "Balance", noCardsSaved: "No cards saved. Add one in your Wallet page.",
+    goToWallet: "Go to Wallet", topUpWallet: "Top Up Wallet",
+    needMore: "more", insufficientBalance: "Insufficient balance",
+    afterPurchase: "After purchase", continueToPayment: "Continue to Payment",
+    pay: "Pay", processing: "Processing...",
+    orderConfirmed: "Order Confirmed", thankYouPurchase: "Thank you for your purchase!",
+    orderId: "Order ID", shipTo: "Ship to", phone: "Phone",
+    fillAddress: "Please fill in your shipping address.",
+    validPhone: "Please enter a valid contact number.",
+    selectCard: "Please select a card.",
+    // Orders
+    noOrdersYet: "No orders yet. Start shopping!", cancelRequested: "Cancel Requested",
+    requestCancellation: "Request Cancellation", whyCancelQ: "Why do you want to cancel?",
+    explainReason: "Please explain your reason...", submitRequest: "Submit Request",
+    neverMind: "Never mind", cancelRequestPending: "Cancel request: pending",
+    cancelRequestApproved: "Cancel request: approved", cancelRequestRejected: "Cancel request: rejected",
+    reason: "Reason", sellerResponse: "Seller response", provideReason: "Please provide a reason.",
+    paymentAndContact: "PAYMENT & CONTACT",
+    // Seller Orders
+    totalOrders: "total orders", cancellationRequests: "cancellation request",
+    all: "All", confirmed: "Confirmed", shipped: "Shipped", delivered: "Delivered",
+    cancellations: "Cancellations", buyerCancelReason: "Buyer's cancellation reason:",
+    approveRefund: "Approve Refund", reject: "Reject", rejectExplain: "Explain why you're rejecting (optional):",
+    confirmReject: "Confirm Reject", cancel: "Cancel", confirmOrder: "Confirm Order",
+    markShipped: "Mark as Shipped", markDelivered: "Mark Delivered",
+    confirmPrepare: "Confirm to start preparing this order",
+    handedCourier: "Mark when you've handed it to the courier",
+    buyerReceived: "Mark when buyer has received the item",
+    orderCompleted: "Order completed successfully", orderRefunded: "Order refunded to buyer",
+    cancelledByBuyer: "Cancellation requested by buyer", noOrdersFilter: "No orders",
+    // Wallet
+    availableBalance: "Available Balance", cardsLinked: "cards linked",
+    overview: "Overview", topup: "Top Up", cards: "Cards", history: "History",
+    totalDeposited: "Total Deposited", totalSpent: "Total Spent",
+    recentTransactions: "Recent Transactions", noTransactions: "No transactions yet. Add a card and top up to get started.",
+    topUpWalletTitle: "Top Up Wallet", needCardFirst: "You need to add a card first.",
+    addCard: "Add a Card", selectCardLabel: "Select card", amount: "Amount",
+    enterCustomAmount: "Or enter custom amount", enterAmount: "Enter amount",
+    maxTopup: "Maximum $10,000 per top-up.", cardAdded: "Card added successfully!",
+    addNewCard: "Add New Card", newCard: "New Card", cardNumber: "Card number",
+    cardholderName: "Cardholder name", expiry: "Expiry", anyDigitsWork: "Any 16-digit number works for this demo.",
+    totalToppedUp: "Total topped up", allTransactions: "All Transactions",
+    noTransactionsYet: "No transactions yet",
+    // Seller Earnings
+    earnings: "Earnings", grossSales: "Gross Sales", commission: "Commission (5%)",
+    netEarnings: "Net Earnings", walletBalance: "Wallet Balance",
+    itemsSold: "Items Sold", earningsByProduct: "Earnings by Product",
+    product: "Product", price: "Price", unitsSold: "Units Sold",
+    gross: "Gross", netEarningsCol: "Net Earnings",
+    noEarningsYet: "No transactions yet. Earnings appear here when buyers purchase your products.",
+    // Admin
+    metrics: "Metrics", users: "Users", finance: "Finance", orders: "Orders",
+    totalUsers: "Total Users", activeListings: "Active Listings", revenue: "Revenue",
+    pendingOrders: "pending", ordersThisWeek: "orders this week",
+    allUsersCount: "All Users", active: "Active", suspended: "Suspended",
+    totalRevenue: "Total Revenue", platformFees: "Platform Fees (5%)", totalTax: "Total Tax",
+    revenueBy: "Revenue by", revenueBySeller: "Revenue by Seller",
+    revenueByCategory: "Revenue by Category", store: "Store",
+    platformFee: "Platform Fee", netToSeller: "Net to Seller",
+    allOrdersCount: "All Orders", date: "Date", status: "Status",
+    // Settings
+    appearance: "Appearance", account: "Account", theme: "Theme",
+    light: "Light", dark: "Dark", accentColor: "Accent Color",
+    accountDetails: "Account Details", name: "Name", role: "Role",
+    memberSince: "Member Since", cardsSaved: "cards saved",
+    // Footer
+    shop: "Shop", sell: "Sell", help: "Help", about: "About",
+    categories: "Categories", deals: "Deals", trending: "Trending", newArrivals: "New Arrivals",
+    startSelling: "Start Selling", sellerHub: "Seller Hub", fees: "Fees",
+    helpCenter: "Help Center", contactUs: "Contact Us", returns: "Returns",
+    aboutUs: "About Us", careers: "Careers", press: "Press",
+    terms: "Terms", privacy: "Privacy", cookies: "Cookies",
+    allRightsReserved: "2026 Marketplace. All rights reserved.",
+  },
+  zh: {
+    marketplace: "市集商城", searchMarketplace: "搜尋商品", signIn: "登入", signOut: "登出",
+    register: "註冊", login: "登入", buyAndSell: "買賣，從未如此優雅。",
+    buyer: "買家", seller: "賣家", admin: "管理員", email: "電子郵件", password: "密碼",
+    fullName: "姓名", iAmA: "我的身份", createAccount: "建立帳號", forgotPassword: "忘記密碼？",
+    newAccountWallet: "新帳號初始錢包餘額為 $0", pleaseWait: "請稍候...",
+    adminHint: "管理員：admin@gmail.com / admin123456", fillAllFields: "請填寫所有欄位。",
+    pwMin6: "密碼至少需要6個字元。",
+    wallet: "錢包", myOrders: "我的訂單", incomingOrders: "收到的訂單", myEarnings: "我的收益",
+    settings: "設定", browseStore: "瀏覽商店", adminPanel: "管理面板",
+    springCollection: "春季系列", discoverNew: "探索最新商品。",
+    curatedCollections: "來自平台上最優質賣家的精選商品。",
+    todaysDeals: "今日特惠", trendingNow: "熱門推薦", allProducts: "全部商品",
+    resultsFor: "搜尋結果：", items: "件商品", noProductsFound: "找不到商品",
+    freeShipping: "免運費", sold: "已售出",
+    back: "返回", condition: "商品狀況", inStock: "庫存", shipping: "運費",
+    free: "免費", quantity: "數量", addToBag: "加入購物袋", buyNow: "立即購買",
+    youSave: "節省", reviews: "則評價", units: "件",
+    yourBag: "購物袋", continueShopping: "繼續購物", bagEmpty: "您的購物袋是空的",
+    orderSummary: "訂單摘要", subtotal: "小計", tax: "稅金", total: "總計",
+    checkout: "結帳",
+    shippingAddress: "收貨地址", address: "地址", city: "城市",
+    postalCode: "郵遞區號", country: "國家", contactInfo: "聯絡資訊",
+    phoneNumber: "手機號碼", deliveryUpdates: "我們會將配送更新發送至此號碼。",
+    payment: "付款", paymentMethod: "付款方式", payWithCard: "信用卡付款",
+    balance: "餘額", noCardsSaved: "尚未儲存任何卡片，請先到錢包頁面新增。",
+    goToWallet: "前往錢包", topUpWallet: "儲值",
+    needMore: "不足", insufficientBalance: "餘額不足",
+    afterPurchase: "購買後餘額", continueToPayment: "前往付款",
+    pay: "支付", processing: "處理中...",
+    orderConfirmed: "訂單已確認", thankYouPurchase: "感謝您的購買！",
+    orderId: "訂單編號", shipTo: "寄送至", phone: "電話",
+    fillAddress: "請填寫收貨地址。", validPhone: "請輸入有效的聯絡電話。",
+    selectCard: "請選擇一張卡片。",
+    noOrdersYet: "尚無訂單，開始購物吧！", cancelRequested: "已申請取消",
+    requestCancellation: "申請取消", whyCancelQ: "您為什麼要取消？",
+    explainReason: "請說明您的原因...", submitRequest: "提交申請",
+    neverMind: "算了", cancelRequestPending: "取消申請：等待中",
+    cancelRequestApproved: "取消申請：已批准", cancelRequestRejected: "取消申請：已拒絕",
+    reason: "原因", sellerResponse: "賣家回覆", provideReason: "請提供原因。",
+    paymentAndContact: "付款與聯絡資訊",
+    totalOrders: "筆訂單", cancellationRequests: "筆取消申請",
+    all: "全部", confirmed: "已確認", shipped: "已出貨", delivered: "已送達",
+    cancellations: "取消申請", buyerCancelReason: "買家取消原因：",
+    approveRefund: "批准退款", reject: "拒絕", rejectExplain: "說明拒絕原因（選填）：",
+    confirmReject: "確認拒絕", cancel: "取消", confirmOrder: "確認訂單",
+    markShipped: "標記為已出貨", markDelivered: "標記為已送達",
+    confirmPrepare: "確認後開始準備此訂單",
+    handedCourier: "交給快遞時點擊標記",
+    buyerReceived: "買家收到貨時點擊標記",
+    orderCompleted: "訂單已成功完成", orderRefunded: "已退款給買家",
+    cancelledByBuyer: "買家已申請取消", noOrdersFilter: "沒有訂單",
+    availableBalance: "可用餘額", cardsLinked: "張已綁定卡片",
+    overview: "概覽", topup: "儲值", cards: "卡片", history: "紀錄",
+    totalDeposited: "累計儲值", totalSpent: "累計消費",
+    recentTransactions: "最近交易", noTransactions: "尚無交易紀錄，請先新增卡片並儲值。",
+    topUpWalletTitle: "錢包儲值", needCardFirst: "您需要先新增一張卡片。",
+    addCard: "新增卡片", selectCardLabel: "選擇卡片", amount: "金額",
+    enterCustomAmount: "或輸入自訂金額", enterAmount: "輸入金額",
+    maxTopup: "每次最高儲值 $10,000。", cardAdded: "卡片新增成功！",
+    addNewCard: "新增卡片", newCard: "新卡片", cardNumber: "卡號",
+    cardholderName: "持卡人姓名", expiry: "到期日", anyDigitsWork: "本演示版接受任何16位數字。",
+    totalToppedUp: "累計儲值", allTransactions: "全部交易紀錄",
+    noTransactionsYet: "尚無交易紀錄",
+    earnings: "收益", grossSales: "銷售總額", commission: "平台佣金 (5%)",
+    netEarnings: "淨收益", walletBalance: "錢包餘額",
+    itemsSold: "已售商品", earningsByProduct: "商品收益明細",
+    product: "商品", price: "價格", unitsSold: "售出數量",
+    gross: "總額", netEarningsCol: "淨收益",
+    noEarningsYet: "尚無交易紀錄。當買家購買您的商品時，收益將會顯示在這裡。",
+    metrics: "數據總覽", users: "使用者", finance: "財務", orders: "訂單",
+    totalUsers: "使用者總數", activeListings: "上架商品", revenue: "營收",
+    pendingOrders: "待處理", ordersThisWeek: "本週訂單",
+    allUsersCount: "所有使用者", active: "啟用中", suspended: "已停權",
+    totalRevenue: "總營收", platformFees: "平台費用 (5%)", totalTax: "稅金總額",
+    revenueBy: "營收來源", revenueBySeller: "賣家營收",
+    revenueByCategory: "分類營收", store: "商店",
+    platformFee: "平台費", netToSeller: "賣家淨收",
+    allOrdersCount: "全部訂單", date: "日期", status: "狀態",
+    appearance: "外觀", account: "帳號", theme: "主題",
+    light: "淺色", dark: "深色", accentColor: "強調色",
+    accountDetails: "帳號資訊", name: "姓名", role: "身份",
+    memberSince: "加入日期", cardsSaved: "張已儲存卡片",
+    shop: "購物", sell: "銷售", help: "幫助", about: "關於",
+    categories: "分類", deals: "特惠", trending: "熱門", newArrivals: "新品上架",
+    startSelling: "開始銷售", sellerHub: "賣家中心", fees: "費用",
+    helpCenter: "幫助中心", contactUs: "聯絡我們", returns: "退貨",
+    aboutUs: "關於我們", careers: "人才招募", press: "媒體",
+    terms: "使用條款", privacy: "隱私權", cookies: "Cookie 政策",
+    allRightsReserved: "2026 市集商城。版權所有。",
+  },
+};
+
+// Translation hook
+const useT = () => {
+  const { lang } = useLang();
+  return (key) => TRANSLATIONS[lang]?.[key] || TRANSLATIONS.en[key] || key;
+};
 
 // ─── Colors ───
 const getColors = (theme, accentColor) => {
@@ -115,6 +323,8 @@ const Spinner = ({ size = 24 }) => {
 // ════════════════════════════════════════
 const LoginPage = ({ onLogin }) => {
   const c = useColors();
+  const { lang, setLang } = useLang();
+  const t = useT();
   const [mode, setMode] = useState("login");
   const [role, setRole] = useState("buyer");
   const [email, setEmail] = useState("");
@@ -125,9 +335,9 @@ const LoginPage = ({ onLogin }) => {
 
   const handleSubmit = async () => {
     setError("");
-    if (mode === "register" && (!name || !email || !password)) return setError("Please fill in all fields.");
-    if (mode === "login" && (!email || !password)) return setError("Please fill in all fields.");
-    if (mode === "register" && password.length < 6) return setError("Password must be at least 6 characters.");
+    if (mode === "register" && (!name || !email || !password)) return setError(t("fillAllFields"));
+    if (mode === "login" && (!email || !password)) return setError(t("fillAllFields"));
+    if (mode === "register" && password.length < 6) return setError(t("pwMin6"));
     setLoading(true);
     try {
       const endpoint = mode === "login" ? "/auth/login" : "/auth/register";
@@ -144,30 +354,34 @@ const LoginPage = ({ onLogin }) => {
   return (
     <div style={{ minHeight: "100vh", background: c.bg, display: "flex", alignItems: "center", justifyContent: "center", padding: "20px", fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif' }}>
       <div style={{ width: "100%", maxWidth: "400px", animation: "fadeIn 0.6s ease" }}>
+        {/* Language toggle on login page */}
+        <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "16px" }}>
+          <button onClick={() => setLang(lang==="en"?"zh":"en")} style={{ padding: "6px 16px", borderRadius: "50px", border: `1px solid ${c.border}`, background: c.cardBg, cursor: "pointer", fontSize: "13px", fontWeight: "600", color: c.text }}>{lang==="en" ? "中文" : "English"}</button>
+        </div>
         <div style={{ textAlign: "center", marginBottom: "40px" }}>
-          <div style={{ fontSize: "42px", fontWeight: "700", color: c.text, letterSpacing: "-0.03em", marginBottom: "8px" }}>Marketplace</div>
-          <p style={{ color: c.textSec, fontSize: "17px" }}>Buy and sell, beautifully.</p>
+          <div style={{ fontSize: "42px", fontWeight: "700", color: c.text, letterSpacing: "-0.03em", marginBottom: "8px" }}>{t("marketplace")}</div>
+          <p style={{ color: c.textSec, fontSize: "17px" }}>{t("buyAndSell")}</p>
         </div>
         <div style={{ background: c.cardBg, borderRadius: "18px", padding: "36px", boxShadow: c.bg === "#000" ? "0 0 0 1px rgba(255,255,255,0.08)" : "0 2px 20px rgba(0,0,0,0.06)" }}>
           <div style={{ display: "flex", background: c.pillBg, borderRadius: "10px", padding: "3px", marginBottom: "24px" }}>
-            {["login","register"].map(m => <button key={m} onClick={() => { setMode(m); setError(""); }} style={{ flex: 1, padding: "10px", borderRadius: "8px", border: "none", background: mode===m ? c.tabActive : "transparent", color: mode===m ? c.text : c.textSec, fontWeight: "500", fontSize: "14px", cursor: "pointer", boxShadow: mode===m ? "0 1px 4px rgba(0,0,0,0.1)" : "none", textTransform: "capitalize" }}>{m}</button>)}
+            {[["login",t("login")],["register",t("register")]].map(([m,label]) => <button key={m} onClick={() => { setMode(m); setError(""); }} style={{ flex: 1, padding: "10px", borderRadius: "8px", border: "none", background: mode===m ? c.tabActive : "transparent", color: mode===m ? c.text : c.textSec, fontWeight: "500", fontSize: "14px", cursor: "pointer", boxShadow: mode===m ? "0 1px 4px rgba(0,0,0,0.1)" : "none" }}>{label}</button>)}
           </div>
           {mode === "register" && (
             <div style={{ marginBottom: "20px" }}>
-              <label style={{ display: "block", fontSize: "12px", fontWeight: "600", color: c.textSec, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "10px" }}>I am a</label>
+              <label style={{ display: "block", fontSize: "12px", fontWeight: "600", color: c.textSec, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "10px" }}>{t("iAmA")}</label>
               <div style={{ display: "flex", gap: "8px" }}>
-                {["buyer","seller"].map(r => <button key={r} onClick={() => setRole(r)} style={{ flex: 1, padding: "12px", borderRadius: "12px", border: `1.5px solid ${role===r ? c.accent : c.border}`, background: role===r ? c.accent+"14" : "transparent", color: role===r ? c.accent : c.textSec, fontWeight: "500", fontSize: "14px", cursor: "pointer", textTransform: "capitalize" }}>{r}</button>)}
+                {[["buyer",t("buyer")],["seller",t("seller")]].map(([r,label]) => <button key={r} onClick={() => setRole(r)} style={{ flex: 1, padding: "12px", borderRadius: "12px", border: `1.5px solid ${role===r ? c.accent : c.border}`, background: role===r ? c.accent+"14" : "transparent", color: role===r ? c.accent : c.textSec, fontWeight: "500", fontSize: "14px", cursor: "pointer" }}>{label}</button>)}
               </div>
             </div>
           )}
           {error && <div style={{ background: "#ff3b3014", border: "1px solid #ff3b3044", borderRadius: "10px", padding: "12px 16px", marginBottom: "16px", fontSize: "14px", color: "#ff3b30", fontWeight: "500" }}>{error}</div>}
-          {mode === "register" && <Input label="Full name" value={name} onChange={e => setName(e.target.value)} placeholder="John Appleseed" />}
-          <Input label="Email" type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="you@email.com" />
-          <Input label="Password" type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Minimum 6 characters" />
-          <Btn full disabled={loading} onClick={handleSubmit} style={{ padding: "16px", fontSize: "17px", marginTop: "8px" }}>{loading ? "Please wait..." : mode === "login" ? "Sign In" : "Create Account"}</Btn>
-          {mode === "register" && <p style={{ fontSize: "13px", color: c.textSec, textAlign: "center", marginTop: "16px" }}>New accounts start with $10,000 wallet balance</p>}
+          {mode === "register" && <Input label={t("fullName")} value={name} onChange={e => setName(e.target.value)} placeholder="John Appleseed" />}
+          <Input label={t("email")} type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="you@email.com" />
+          <Input label={t("password")} type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder={t("pwMin6")} />
+          <Btn full disabled={loading} onClick={handleSubmit} style={{ padding: "16px", fontSize: "17px", marginTop: "8px" }}>{loading ? t("pleaseWait") : mode === "login" ? t("signIn") : t("createAccount")}</Btn>
+          {mode === "register" && <p style={{ fontSize: "13px", color: c.textSec, textAlign: "center", marginTop: "16px" }}>{t("newAccountWallet")}</p>}
         </div>
-        <p style={{ fontSize: "12px", color: c.textSec, textAlign: "center", marginTop: "24px" }}>Admin: admin@gmail.com / admin123456</p>
+        <p style={{ fontSize: "12px", color: c.textSec, textAlign: "center", marginTop: "24px" }}>{t("adminHint")}</p>
       </div>
     </div>
   );
@@ -1076,15 +1290,21 @@ const SellerOrdersPage = ({ token, onBack }) => {
 export default function App() {
   const [theme, setTheme] = useState("light");
   const [accentColor, setAccentColor] = useState("blue");
+  const [lang, setLang] = useState(() => { try { return sessionStorage.getItem("mp_lang") || "en"; } catch { return "en"; } });
+  useEffect(() => { try { sessionStorage.setItem("mp_lang", lang); } catch {} }, [lang]);
   return (
+    <LangContext.Provider value={{ lang, setLang }}>
     <ThemeContext.Provider value={{ theme, setTheme, accentColor, setAccentColor }}>
       <AppInner />
     </ThemeContext.Provider>
+    </LangContext.Provider>
   );
 }
 
 function AppInner() {
   const { theme, setTheme } = useTheme();
+  const { lang, setLang } = useLang();
+  const t = useT();
   const c = useColors();
   const [token, setToken] = useState(() => { try { return sessionStorage.getItem("mp_token"); } catch { return null; } });
   const [user, setUser] = useState(() => { try { const u = sessionStorage.getItem("mp_user"); return u ? JSON.parse(u) : null; } catch { return null; } });
@@ -1194,25 +1414,26 @@ function AppInner() {
         {/* Nav */}
         <nav style={{ position: "sticky", top: 0, zIndex: 100, background: c.navBg, backdropFilter: "blur(20px)", borderBottom: `0.5px solid ${c.border}` }}>
           <div style={{ maxWidth: "1200px", margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 20px", height: "52px" }}>
-            <button onClick={() => { setPage(user.role==="admin" ? "admin-dashboard" : "home"); setSearchQuery(""); setSelectedCategory("All"); }} style={{ background: "none", border: "none", cursor: "pointer", fontSize: "20px", fontWeight: "700", color: c.text, letterSpacing: "-0.03em" }}>Marketplace</button>
+            <button onClick={() => { setPage(user.role==="admin" ? "admin-dashboard" : "home"); setSearchQuery(""); setSelectedCategory("All"); }} style={{ background: "none", border: "none", cursor: "pointer", fontSize: "20px", fontWeight: "700", color: c.text, letterSpacing: "-0.03em" }}>{t("marketplace")}</button>
             <div style={{ flex: 1, maxWidth: "520px", margin: "0 24px", position: "relative" }}>
               <div style={{ position: "absolute", left: "14px", top: "50%", transform: "translateY(-50%)", color: c.textSec }}><I.Search /></div>
-              <input value={searchQuery} onChange={e => { setSearchQuery(e.target.value); setPage("home"); }} placeholder="Search marketplace" style={{ width: "100%", padding: "10px 16px 10px 40px", borderRadius: "10px", border: "none", background: c.pillBg, color: c.text, fontSize: "15px", outline: "none" }} />
+              <input value={searchQuery} onChange={e => { setSearchQuery(e.target.value); setPage("home"); }} placeholder={t("searchMarketplace")} style={{ width: "100%", padding: "10px 16px 10px 40px", borderRadius: "10px", border: "none", background: c.pillBg, color: c.text, fontSize: "15px", outline: "none" }} />
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
               <button onClick={() => setPage("wallet")} style={{ display: "flex", alignItems: "center", gap: "6px", padding: "6px 14px", background: c.pillBg, borderRadius: "50px", border: "none", cursor: "pointer" }}><I.Wallet /><span style={{ fontSize: "14px", fontWeight: "600", color: c.text }}>${parseFloat(user.wallet_balance).toFixed(0)}</span></button>
               {user.role !== "admin" && <button onClick={() => setPage("cart")} style={{ position: "relative", width: "40px", height: "40px", borderRadius: "50%", border: "none", background: "transparent", cursor: "pointer", color: c.text }}><I.Cart />{cart.length > 0 && <span style={{ position: "absolute", top: "4px", right: "4px", width: "18px", height: "18px", borderRadius: "50%", background: "#ff3b30", color: "#fff", fontSize: "11px", fontWeight: "600", display: "flex", alignItems: "center", justifyContent: "center" }}>{cart.length}</span>}</button>}
               <button onClick={() => setTheme(theme==="dark"?"light":"dark")} style={{ width: "40px", height: "40px", borderRadius: "50%", border: "none", background: "transparent", cursor: "pointer", color: c.text }}>{theme==="dark" ? <I.Sun /> : <I.Moon />}</button>
+              <button onClick={() => setLang(lang==="en"?"zh":"en")} style={{ height: "32px", padding: "0 12px", borderRadius: "50px", border: `1px solid ${c.border}`, background: c.pillBg, cursor: "pointer", fontSize: "13px", fontWeight: "600", color: c.text, display: "flex", alignItems: "center", gap: "4px" }}>{lang==="en" ? "中文" : "EN"}</button>
               <div style={{ position: "relative" }}>
                 <button onClick={() => setShowUserMenu(!showUserMenu)} style={{ width: "36px", height: "36px", borderRadius: "50%", border: "none", background: c.accent, color: "#fff", fontSize: "13px", fontWeight: "600", cursor: "pointer" }}>{user.avatar}</button>
                 {showUserMenu && <div style={{ position: "absolute", right: 0, top: "44px", width: "220px", background: c.cardBg, borderRadius: "14px", border: `1px solid ${c.border}`, boxShadow: "0 8px 40px rgba(0,0,0,0.15)", animation: "slideDown 0.2s ease", overflow: "hidden", zIndex: 200 }}>
                   <div style={{ padding: "16px 20px", borderBottom: `1px solid ${c.border}` }}><p style={{ fontSize: "14px", fontWeight: "600", color: c.text }}>{user.name}</p><p style={{ fontSize: "12px", color: c.textSec, textTransform: "capitalize" }}>{user.role} · ${parseFloat(user.wallet_balance).toFixed(0)}</p></div>
-                  {[{l:"Wallet",i:<I.Wallet />,a:() => setPage("wallet")},{l:"My Orders",i:<I.Package />,a:() => setPage("orders")},
-                    ...(user.role==="seller" ? [{l:"Incoming Orders",i:<I.FileText />,a:() => setPage("seller-orders")},{l:"My Earnings",i:<I.DollarSign />,a:() => setPage("seller-earnings")}] : []),
-                    {l:"Settings",i:<I.Settings />,a:() => setPage("settings")},{l:"Browse Store",i:<I.Home />,a:() => setPage("home")},
-                    ...(user.role==="admin" ? [{l:"Admin Panel",i:<I.Shield />,a:() => setPage("admin-dashboard")}] : [])
+                  {[{l:t("wallet"),i:<I.Wallet />,a:() => setPage("wallet")},{l:t("myOrders"),i:<I.Package />,a:() => setPage("orders")},
+                    ...(user.role==="seller" ? [{l:t("incomingOrders"),i:<I.FileText />,a:() => setPage("seller-orders")},{l:t("myEarnings"),i:<I.DollarSign />,a:() => setPage("seller-earnings")}] : []),
+                    {l:t("settings"),i:<I.Settings />,a:() => setPage("settings")},{l:t("browseStore"),i:<I.Home />,a:() => setPage("home")},
+                    ...(user.role==="admin" ? [{l:t("adminPanel"),i:<I.Shield />,a:() => setPage("admin-dashboard")}] : [])
                   ].map((item,i) => <button key={i} onClick={() => { item.a(); setShowUserMenu(false); }} style={{ width: "100%", padding: "12px 20px", border: "none", background: "transparent", cursor: "pointer", display: "flex", alignItems: "center", gap: "12px", fontSize: "14px", color: c.text, textAlign: "left" }} onMouseOver={e => e.currentTarget.style.background = c.hoverBg} onMouseOut={e => e.currentTarget.style.background = "transparent"}><span style={{ color: c.textSec }}>{item.i}</span>{item.l}</button>)}
-                  <div style={{ borderTop: `1px solid ${c.border}` }}><button onClick={handleLogout} style={{ width: "100%", padding: "12px 20px", border: "none", background: "transparent", cursor: "pointer", fontSize: "14px", color: "#ff3b30", textAlign: "left" }}>Sign Out</button></div>
+                  <div style={{ borderTop: `1px solid ${c.border}` }}><button onClick={handleLogout} style={{ width: "100%", padding: "12px 20px", border: "none", background: "transparent", cursor: "pointer", fontSize: "14px", color: "#ff3b30", textAlign: "left" }}>{t("signOut")}</button></div>
                 </div>}
               </div>
             </div>
@@ -1233,35 +1454,35 @@ function AppInner() {
           <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 20px" }}>
             {!searchQuery && selectedCategory === "All" && (
               <div style={{ background: theme==="dark" ? "linear-gradient(135deg,#1a1a2e,#16213e)" : "linear-gradient(135deg,#667eea,#764ba2)", borderRadius: "24px", padding: "60px 48px", margin: "24px 0 40px" }}>
-                <p style={{ fontSize: "14px", fontWeight: "500", color: "rgba(255,255,255,0.7)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "12px" }}>Spring Collection</p>
-                <h2 style={{ fontSize: "42px", fontWeight: "700", color: "#fff", letterSpacing: "-0.03em", lineHeight: "1.1", marginBottom: "12px", maxWidth: "500px" }}>Discover what's new.</h2>
-                <p style={{ fontSize: "18px", color: "rgba(255,255,255,0.8)", marginBottom: "28px", maxWidth: "460px" }}>Curated collections from the best sellers on our platform.</p>
+                <p style={{ fontSize: "14px", fontWeight: "500", color: "rgba(255,255,255,0.7)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "12px" }}>{t("springCollection")}</p>
+                <h2 style={{ fontSize: "42px", fontWeight: "700", color: "#fff", letterSpacing: "-0.03em", lineHeight: "1.1", marginBottom: "12px", maxWidth: "500px" }}>{t("discoverNew")}</h2>
+                <p style={{ fontSize: "18px", color: "rgba(255,255,255,0.8)", marginBottom: "28px", maxWidth: "460px" }}>{t("curatedCollections")}</p>
               </div>
             )}
 
             <div style={{ display: "flex", gap: "8px", marginBottom: "32px", overflowX: "auto", padding: "4px 0" }}>
-              {["All", ...categories.map(c => c.name)].map(cat => <button key={cat} onClick={() => setSelectedCategory(cat)} style={{ padding: "10px 22px", borderRadius: "50px", border: `1.5px solid ${selectedCategory===cat ? c.accent : c.border}`, background: selectedCategory===cat ? c.accent+"14" : "transparent", color: selectedCategory===cat ? c.accent : c.textSec, fontSize: "14px", fontWeight: "500", cursor: "pointer", whiteSpace: "nowrap" }}>{cat}</button>)}
+              {[t("all"), ...categories.map(c => c.name)].map((cat,i) => <button key={cat} onClick={() => setSelectedCategory(i===0?"All":cat)} style={{ padding: "10px 22px", borderRadius: "50px", border: `1.5px solid ${(i===0?selectedCategory==="All":selectedCategory===cat) ? c.accent : c.border}`, background: (i===0?selectedCategory==="All":selectedCategory===cat) ? c.accent+"14" : "transparent", color: (i===0?selectedCategory==="All":selectedCategory===cat) ? c.accent : c.textSec, fontSize: "14px", fontWeight: "500", cursor: "pointer", whiteSpace: "nowrap" }}>{cat}</button>)}
             </div>
 
             {loading ? <div style={{ textAlign: "center", padding: "60px" }}><Spinner size={32} /></div> : <>
               {!searchQuery && selectedCategory === "All" && deals.length > 0 && (
                 <div style={{ marginBottom: "48px" }}>
-                  <h2 style={{ fontSize: "28px", fontWeight: "700", color: c.text, letterSpacing: "-0.03em", marginBottom: "20px" }}>Today's Deals</h2>
+                  <h2 style={{ fontSize: "28px", fontWeight: "700", color: c.text, letterSpacing: "-0.03em", marginBottom: "20px" }}>{t("todaysDeals")}</h2>
                   <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "16px" }}>{deals.slice(0,4).map(p => <ProductCard key={p.id} product={p} onView={setSelectedProduct} onToggleWatchlist={id => setWatchlist(prev => prev.includes(id)?prev.filter(i=>i!==id):[...prev,id])} isWatched={watchlist.includes(p.id)} />)}</div>
                 </div>
               )}
               {!searchQuery && selectedCategory === "All" && trending.length > 0 && (
                 <div style={{ marginBottom: "48px" }}>
-                  <h2 style={{ fontSize: "28px", fontWeight: "700", color: c.text, letterSpacing: "-0.03em", marginBottom: "20px" }}>Trending Now</h2>
+                  <h2 style={{ fontSize: "28px", fontWeight: "700", color: c.text, letterSpacing: "-0.03em", marginBottom: "20px" }}>{t("trendingNow")}</h2>
                   <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "16px" }}>{trending.slice(0,4).map(p => <ProductCard key={p.id} product={p} onView={setSelectedProduct} onToggleWatchlist={id => setWatchlist(prev => prev.includes(id)?prev.filter(i=>i!==id):[...prev,id])} isWatched={watchlist.includes(p.id)} />)}</div>
                 </div>
               )}
               <div style={{ marginBottom: "60px" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "20px" }}>
-                  <h2 style={{ fontSize: "28px", fontWeight: "700", color: c.text, letterSpacing: "-0.03em" }}>{searchQuery ? `Results for "${searchQuery}"` : selectedCategory !== "All" ? selectedCategory : "All Products"}</h2>
-                  <span style={{ fontSize: "14px", color: c.textSec }}>{products.length} items</span>
+                  <h2 style={{ fontSize: "28px", fontWeight: "700", color: c.text, letterSpacing: "-0.03em" }}>{searchQuery ? `${t("resultsFor")}"${searchQuery}"` : selectedCategory !== "All" ? selectedCategory : t("allProducts")}</h2>
+                  <span style={{ fontSize: "14px", color: c.textSec }}>{products.length} {t("items")}</span>
                 </div>
-                {products.length === 0 ? <div style={{ textAlign: "center", padding: "60px" }}><p style={{ fontSize: "18px", color: c.textSec }}>No products found</p></div> :
+                {products.length === 0 ? <div style={{ textAlign: "center", padding: "60px" }}><p style={{ fontSize: "18px", color: c.textSec }}>{t("noProductsFound")}</p></div> :
                   <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "16px" }}>{products.map(p => <ProductCard key={p.id} product={p} onView={setSelectedProduct} onToggleWatchlist={id => setWatchlist(prev => prev.includes(id)?prev.filter(i=>i!==id):[...prev,id])} isWatched={watchlist.includes(p.id)} />)}</div>
                 }
               </div>
