@@ -45,11 +45,3 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
   console.log(`Marketplace running on port ${PORT} [${isProd ? "PRODUCTION" : "DEV"}]`);
 });
-```
-
-Save, then push:
-```
-cd C:\SIT\marketplace-deploy
-git add .
-git commit -m "Fix trust proxy and connection port"
-git push
