@@ -436,7 +436,7 @@ const OrdersPage = ({ token, onBack }) => {
   const [expandedOrder, setExpandedOrder] = useState(null);
 
   const load = () => { api.get("/orders", token).then(setOrders).catch(() => {}).finally(() => setLoading(false)); };
-  useEffect(load, []);
+  useEffect(() => { load(); const iv = setInterval(load, 15000); return () => clearInterval(iv); }, []);
 
   const handleCancel = async (orderId) => {
     setCancelError("");
@@ -912,7 +912,7 @@ const SellerOrdersPage = ({ token, onBack }) => {
     data.forEach(o => { if (!seen.has(o.id)) { seen.add(o.id); unique.push(o); } });
     setOrders(unique);
   }).catch(err => console.error(err)).finally(() => setLoading(false)); };
-  useEffect(load, []);
+  useEffect(() => { load(); const iv = setInterval(load, 10000); return () => clearInterval(iv); }, []);
 
   const handleStatusUpdate = async (orderId, status) => {
     setActionLoading(orderId);
@@ -1086,20 +1086,41 @@ export default function App() {
 function AppInner() {
   const { theme, setTheme } = useTheme();
   const c = useColors();
-  const [token, setToken] = useState(null);
-  const [user, setUser] = useState(null);
+  const [token, setToken] = useState(() => { try { return sessionStorage.getItem("mp_token"); } catch { return null; } });
+  const [user, setUser] = useState(() => { try { const u = sessionStorage.getItem("mp_user"); return u ? JSON.parse(u) : null; } catch { return null; } });
   const [page, setPage] = useState("home");
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState(() => { try { const c = sessionStorage.getItem("mp_cart"); return c ? JSON.parse(c) : []; } catch { return []; } });
   const [watchlist, setWatchlist] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [checkoutItems, setCheckoutItems] = useState([]);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [toast, setToast] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  // Persist token, user, and cart to sessionStorage
+  useEffect(() => { try { if (token) sessionStorage.setItem("mp_token", token); else sessionStorage.removeItem("mp_token"); } catch {} }, [token]);
+  useEffect(() => { try { if (user) sessionStorage.setItem("mp_user", JSON.stringify(user)); else sessionStorage.removeItem("mp_user"); } catch {} }, [user]);
+  useEffect(() => { try { sessionStorage.setItem("mp_cart", JSON.stringify(cart)); } catch {} }, [cart]);
+
+  // Auto-refresh user data every 30 seconds (keeps wallet balance current)
+  useEffect(() => {
+    if (!token) return;
+    const interval = setInterval(() => {
+      api.get("/auth/me", token).then(u => setUser(u)).catch(() => {});
+    }, 30000);
+    return () => clearInterval(interval);
+  }, [token]);
+
+  // Restore session on mount — verify token is still valid
+  useEffect(() => {
+    if (token && user) {
+      api.get("/auth/me", token).then(u => setUser(u)).catch(() => { setToken(null); setUser(null); });
+    }
+  }, []);
 
   // Fetch products and categories
   const loadProducts = async (search, category) => {
@@ -1127,7 +1148,7 @@ function AppInner() {
   useEffect(() => { loadProducts(searchQuery, selectedCategory); }, [searchQuery, selectedCategory]);
 
   const handleLogin = (t, u) => { setToken(t); setUser(u); setPage(u.role === "seller" ? "seller-dashboard" : u.role === "admin" ? "admin-dashboard" : "home"); };
-  const handleLogout = () => { setToken(null); setUser(null); setCart([]); setPage("home"); setShowUserMenu(false); };
+  const handleLogout = () => { setToken(null); setUser(null); setCart([]); setPage("home"); setShowUserMenu(false); try { sessionStorage.removeItem("mp_token"); sessionStorage.removeItem("mp_user"); sessionStorage.removeItem("mp_cart"); } catch {} };
 
   const addToCart = (product, qty = 1) => {
     setCart(prev => { const ex = prev.find(i => i.id === product.id); if (ex) return prev.map(i => i.id === product.id ? { ...i, qty: i.qty + qty } : i); return [...prev, { ...product, qty }]; });
